@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="The_Validator11.FlowRow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="26" Width="603">
+    <Grid Height="26">
+        <TextBox HorizontalAlignment="Left" Margin="6,2,0,0" Name="Name" Height="22" Width="150" Text="Flow Name">
+        </TextBox>
+        <ComboBox HorizontalAlignment="Left" Margin="162,2,0,0" Name="Operator" Height="22" Width="50" >
+            <ComboBoxItem>AND</ComboBoxItem>
+            <ComboBoxItem>OR</ComboBoxItem>
+        </ComboBox>
+    </Grid>
+</UserControl>
