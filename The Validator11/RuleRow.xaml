@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="The_Validator11.RuleRow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="26" Width="603">
+    <Grid Height="26">
+        <TextBox HorizontalAlignment="Left" Margin="8,2,0,0" Name="ID" Height="22" Width="30">0</TextBox>
+        <TextBox HorizontalAlignment="Left" Margin="44,2,0,0" Name="Name" Height="22" Width="80" Text="Rule Name">
+        </TextBox>
+        <ComboBox Margin="130,2,0,0" Name="Operator" HorizontalAlignment="Left" Height="22" Width="46">
+        </ComboBox>
+        <TextBox Margin="180,2,0,0" Name="ObjectValue" HorizontalAlignment="Left" Height="22" Width="120">
+        </TextBox>
+        <ComboBox Margin="306,2,0,0" Name="ObjectType" HorizontalAlignment="Left" Height="22" Width="120">
+        </ComboBox>
+    </Grid>
+</UserControl>
