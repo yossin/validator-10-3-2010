@@ -12,6 +12,23 @@ namespace ValidatorCoreLib
         public abstract bool Evaluate(IComparable obj1, IComparable obj2);
     }
 
+    public abstract class OperatorHelper
+    {
+        public static ValidatorCoreLib.IOperator GetOperator(string sName) 
+        {
+            if (sName != null)
+            {
+                if (sName.Equals(typeof(GreaterOperator).ToString())) return new GreaterOperator();
+                if (sName.Equals(typeof(LowerOperator).ToString())) return new LowerOperator();
+                if (sName.Equals(typeof(NotEqualOperator).ToString())) return new NotEqualOperator();
+                if (sName.Equals(typeof(GreaterOrEqualOperator).ToString())) return new GreaterOrEqualOperator();
+                if (sName.Equals(typeof(LowerOrEqualOperator).ToString())) return new LowerOrEqualOperator();
+            }
+            // default
+            return new EqualOperator() ;
+        }
+    }
+
     public abstract class Operator : IOperator
     {
         protected bool CheckTypeMatching(IComparable obj1, IComparable obj2)

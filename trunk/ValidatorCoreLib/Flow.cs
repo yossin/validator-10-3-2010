@@ -2,19 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace ValidatorCoreLib
 {
-
-
     // flow is a recursive structure that holds rules and know how to do a recursive validation.
     // a flow has a two operator options - and/or to determain the action validation check inside the current recursive check
+    [Serializable(), XmlRoot("ValidationFlow", Namespace = "ValidatorCoreLib",IsNullable = false)]
     public class ValidationFlow
     {
         public List<ValidationFlow> flows = new List<ValidationFlow>();
         public List<ValidationRule> rules = new List<ValidationRule>();
+
         public bool UseAndOperator { get; set; }
         public string Name { get; set; }
+
+        // Used only for xml Serialization
+        public ValidationFlow() { }
 
         public ValidationFlow(string Name, bool useAndOperator)
         {
