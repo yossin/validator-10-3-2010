@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ValidationFlow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="ValidatorCoreLib">
+  <flows>
+    <ValidationFlow>
+      <flows />
+      <rules>
+        <ValidationRule>
+          <OperatorName>ValidatorCoreLib.GreaterOrEqualOperator</OperatorName>
+          <contextContain>System.Int32</contextContain>
+          <key>Property 1</key>
+          <ComparedObject xsi:type="xsd:int">5</ComparedObject>
+          <id>1</id>
+        </ValidationRule>
+        <ValidationRule>
+          <OperatorName>ValidatorCoreLib.LowerOrEqualOperator</OperatorName>
+          <contextContain>System.Int32</contextContain>
+          <key>Property 1</key>
+          <ComparedObject xsi:type="xsd:int">15</ComparedObject>
+          <id>2</id>
+        </ValidationRule>
+      </rules>
+      <UseAndOperator>true</UseAndOperator>
+      <Name>Int Check</Name>
+    </ValidationFlow>
+    <ValidationFlow>
+      <flows />
+      <rules>
+        <ValidationRule>
+          <OperatorName>ValidatorCoreLib.EqualOperator</OperatorName>
+          <contextContain>System.string</contextContain>
+          <key>Property 2</key>
+          <ComparedObject xsi:type="xsd:string">value to compare</ComparedObject>
+          <id>3</id>
+        </ValidationRule>
+      </rules>
+      <UseAndOperator>true</UseAndOperator>
+      <Name>String Check</Name>
+    </ValidationFlow>
+  </flows>
+  <rules />
+  <UseAndOperator>true</UseAndOperator>
+  <Name>Main Flow</Name>
+</ValidationFlow>
