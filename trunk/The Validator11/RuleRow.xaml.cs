@@ -45,10 +45,34 @@ namespace The_Validator11
             if (sOp.Equals(typeof(LowerOrEqualOperator).Name)) Operator.SelectedIndex = 5;
         }
 
+        private IOperator getOperatorFromCombo()
+        {
+            switch (Operator.SelectedIndex)
+            {
+                case 0: return new EqualOperator();
+                case 1: return new NotEqualOperator();
+                case 2: return new GreaterOperator();
+                case 3: return new GreaterOrEqualOperator();
+                case 4: return new LowerOperator();
+                case 5: return new LowerOrEqualOperator();
+            }
+            return new EqualOperator();
+        }
+
         private void setTypeComboValue(string str)
         {
             if (str.ToLower().Contains("int")) ObjectType.SelectedIndex = 0;
             if (str.ToLower().Contains("string")) ObjectType.SelectedIndex = 1;
+        }
+
+        private string getTypeFromCombo()
+        {
+            switch (Operator.SelectedIndex)
+            {
+                case 0: return "System.Int32";
+                case 1: return "System.String";
+            }
+            return "System.Int32";
         }
 
         private void SetComboValues()
@@ -62,6 +86,11 @@ namespace The_Validator11
 
             ObjectType.Items.Add("Int");
             ObjectType.Items.Add("String");
+        }
+
+        public ValidatorCoreLib.ValidationRule GetValidationRule()
+        {
+            return new ValidatorCoreLib.ValidationRule(Convert.ToInt32(ID.Text), getTypeFromCombo(), Name.Text, ObjectValue.Text, getOperatorFromCombo());
         }
     }
 }

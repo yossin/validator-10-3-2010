@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using ValidatorCoreLib;
+
 namespace The_Validator11
 {
     /// <summary>
@@ -19,11 +21,40 @@ namespace The_Validator11
     /// </summary>
     public partial class FlowRow : UserControl
     {
-        public FlowRow(string sText, bool bAndOperator)
+        private TreeViewItem tvItem;
+        public FlowRow(string sText, bool bAndOperator, TreeViewItem tvParent)
         {
+            this.tvItem = tvParent;
             InitializeComponent();
             Name.Text = sText;
-            Operator.SelectedIndex = bAndOperator ? 0 : 1 ;
+            Operator.SelectedIndex = bAndOperator ? 0 : 1;
+        }
+
+        private void RemoveFlow_Click(object sender, RoutedEventArgs e)
+        {
+            tvItem.Items.Clear();
+            tvItem.Header = null;
+        }
+
+        private void AddFlow_Click(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem Newitem = new TreeViewItem();
+            FlowRow fr = new FlowRow("New Flow", true, Newitem);
+            Newitem.Header = fr;
+            Newitem.IsExpanded = true;
+            tvItem.Items.Add(Newitem);
+        }
+
+        private void AddRule_Click(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem Newitem = new TreeViewItem();
+            RuleRow rr = new RuleRow(0, "0", new EqualOperator(), "System.Int32", "0");
+            tvItem.Items.Add(rr);
+        }
+
+        public ValidatorCoreLib.ValidationFlow GetValidationFlow()
+        {
+            return new ValidatorCoreLib.ValidationFlow(Name.Text, Operator.SelectedIndex==0? true:false);
         }
     }
 }

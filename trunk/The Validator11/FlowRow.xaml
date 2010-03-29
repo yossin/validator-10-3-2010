@@ -3,11 +3,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Height="26" Width="603">
     <Grid Height="26">
-        <TextBox HorizontalAlignment="Left" Margin="6,2,0,0" Name="Name" Height="22" Width="150" Text="Flow Name">
+        <Button HorizontalAlignment="Left" Margin="6,2,0,0" Name="RemoveFlow" Height="18" Width="18" Click="RemoveFlow_Click" Content="X" >
+        </Button>
+        <TextBox HorizontalAlignment="Left" Margin="30,2,0,0" Name="Name" Height="22" Width="150" Text="Flow Name">
         </TextBox>
-        <ComboBox HorizontalAlignment="Left" Margin="162,2,0,0" Name="Operator" Height="22" Width="50" >
+        <ComboBox HorizontalAlignment="Left" Margin="185,2,0,0" Name="Operator" Height="22" Width="50" >
             <ComboBoxItem>AND</ComboBoxItem>
             <ComboBoxItem>OR</ComboBoxItem>
         </ComboBox>
+        <Button Margin="244,5,0,3" Name="AddFlow" Click="AddFlow_Click" Content="+f" HorizontalAlignment="Left" Width="18">
+        </Button>
+        <Button Margin="264,5,321,3" Name="AddRule" Click="AddRule_Click" Content="+r" >
+        </Button>
     </Grid>
 </UserControl>

@@ -6,7 +6,7 @@
         <TextBox HorizontalAlignment="Left" Margin="8,2,0,0" Name="ID" Height="22" Width="30">0</TextBox>
         <TextBox HorizontalAlignment="Left" Margin="44,2,0,0" Name="Name" Height="22" Width="80" Text="Rule Name">
         </TextBox>
-        <ComboBox Margin="130,2,0,0" Name="Operator" HorizontalAlignment="Left" Height="22" Width="46">
+        <ComboBox Margin="130,2,0,0" Name="Operator" HorizontalAlignment="Left" Height="22" Width="40">
         </ComboBox>
         <TextBox Margin="180,2,0,0" Name="ObjectValue" HorizontalAlignment="Left" Height="22" Width="120">
         </TextBox>
