@@ -78,6 +78,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ConvertionGridRow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="RuleRow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,6 +108,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertionGridRow.xaml.cs">
+      <DependentUpon>ConvertionGridRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConvertionGridData.cs" />
     <Compile Include="RuleRow.xaml.cs">
       <DependentUpon>RuleRow.xaml</DependentUpon>
     </Compile>

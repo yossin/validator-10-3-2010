@@ -27,11 +27,14 @@ namespace The_Validator11
     public partial class Window1 : Window
     {
 
-        public const string sFile = @"../../../bin/list.xml";
+        public const string sFile = @"c:\list.xml";
 
         public Window1()
         {
             InitializeComponent();
+            AddValueToConvertionGrid("yyy", "fds");
+            AddValueToConvertionGrid("yyy2", "fds2");
+            AddValueToConvertionGrid("yyy3", "fds4");
         }
 
         private void OnLoad(object sender, RoutedEventArgs e)
@@ -84,54 +87,24 @@ namespace The_Validator11
 
             foreach (Object ob in tvi.Items)
             {
-                if (ob.GetType().Equals(typeof(RuleRow)))
-                    flow.rules.Add(((RuleRow)ob).GetValidationRule());
+                if (ob.GetType().Equals(typeof(WrapPanel)))   // RuleRow
+                {
+                    WrapPanel wp = (WrapPanel)ob;
+                    foreach (UIElement child in wp.Children)
+                    {
+                        flow.rules.Add(((RuleRow)child).GetValidationRule());
+                    }
+                }
                 else  // flow
                 {
-                    ValidatorCoreLib.ValidationFlow flowToAdd = new ValidatorCoreLib.ValidationFlow(); 
-                    if(  GetValidationFlowFromTree(flowToAdd, (TreeViewItem)ob) )
+                    ValidatorCoreLib.ValidationFlow flowToAdd = new ValidatorCoreLib.ValidationFlow();
+                    if (GetValidationFlowFromTree(flowToAdd, (TreeViewItem)ob))
                         flow.flows.Add(flowToAdd);
                 }
             }
             return true;
         }
-/*
-        private void CreateFlowTree()
-        {
-            ValidationData validationData = new ValidationData();
-            GetPropertiesData(validationData);
 
-            validationData.flow.Name = "Main Flow";
-            validationData.flow.UseAndOperator = true;
-
-            ValidatorCoreLib.ValidationFlow flowInt = new ValidatorCoreLib.ValidationFlow("Int Check", true);
-            ValidatorCoreLib.ValidationRule rrMin = new ValidatorCoreLib.ValidationRule(1, "System.Int32", "Property 1", (int)5, new GreaterOrEqualOperator());
-            ValidatorCoreLib.ValidationRule rrMax = new ValidatorCoreLib.ValidationRule(2, "System.Int32", "Property 1", (int)15, new LowerOrEqualOperator());
-            flowInt.Add(rrMin);
-            flowInt.Add(rrMax);
-            validationData.flow.Add(flowInt);
-
-            ValidatorCoreLib.ValidationFlow flowString = new ValidatorCoreLib.ValidationFlow("String Check", true);
-            ValidatorCoreLib.ValidationRule rrString = new ValidatorCoreLib.ValidationRule(3, "System.string", "Property 2", "value to compare", new EqualOperator());
-            flowString.Add(rrString);
-            validationData.flow.Add(flowString);
-        
-            // Serialize
-            TextWriter w = new StreamWriter(@"c:\list.xml");
-            XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ValidationFlow));
-            s.Serialize(w, validationData.flow);
-            w.Close();
-
-            // deSerialize
-            TextReader w2 = new StreamReader(@"c:\list.xml");
-            XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ValidationFlow));
-            ValidatorCoreLib.ValidationFlow vf = (ValidatorCoreLib.ValidationFlow)s2.Deserialize(w2);
-            w2.Close();
-
-            bool Res = validationData.flow.Validate(validationData.Contexts);
-            AddFlowsAndRules(validationData.flow, Flow_TreeViewItem);
-        }
-*/
         private ValidatorSDK.ValidationResult Validate(IValidatorFactory factory, ValidationData validationData, string flowName)
         {
             Validator validator = factory.CreateValidator(flowName);
@@ -150,12 +123,18 @@ namespace The_Validator11
             FlowRow fr = new FlowRow(in_flow.Name, in_flow.UseAndOperator, tvi);
             tvi.Header = fr;
             tvi.IsExpanded = true;
-                 
+
+            WrapPanel RuleWrapPanel = new WrapPanel();
+
+
+
             foreach (ValidatorCoreLib.ValidationRule rule in in_flow.rules)
             {
-                RuleRow rr = new RuleRow(rule.id, rule.key, rule.Operator, rule.contextContain, rule.ComparedObject);
-                tvi.Items.Add(rr);
+                RuleRow rr = new RuleRow(rule.id, rule.key, rule.Operator, rule.contextContain, rule.ComparedObject, RuleWrapPanel);
+                RuleWrapPanel.Children.Add(rr);
+                //tvi.Items.Add(rr);
             }
+            tvi.Items.Add(RuleWrapPanel);
 
             foreach (ValidatorCoreLib.ValidationFlow flow in in_flow.flows)
             {
@@ -165,5 +144,36 @@ namespace The_Validator11
                 tvi.Items.Add(Newitem);
             }
         }
+
+        private void AddValueToConvertionGrid(String sFrom, String sTo)
+        {
+            ConvertionGrid.RowDefinitions.Add(new RowDefinition());
+            ConvertionRow cgr = new ConvertionRow(sFrom, sTo);
+            Grid.SetRow(cgr, ConvertionGrid.Children.Count);
+            ConvertionGrid.Children.Add(cgr);
+        }
+
+        private double nWidthToRemove = 30;
+        private void FlowTreeSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Change_FlowTreeItemsSize(Flow_TreeViewItem, e.NewSize.Width - nWidthToRemove);
+        }
+
+        private void Change_FlowTreeItemsSize(TreeViewItem tvi, double nWidth)
+        {
+            foreach (Object ob in tvi.Items)
+            {
+                if (ob.GetType().Equals(typeof(WrapPanel)))
+                {
+                    WrapPanel wp  = (WrapPanel)ob ;
+                    wp.Width = nWidth ;
+                }
+                else  // flow = TreeViewItem
+                {
+                    Change_FlowTreeItemsSize((TreeViewItem)ob, nWidth - nWidthToRemove);
+                }
+            }
+        }
+        
     }
 }
