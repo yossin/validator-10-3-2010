@@ -23,14 +23,19 @@ namespace ValidatorCoreLib
     {
         [System.Xml.Serialization.XmlIgnoreAttribute]
         public IOperator Operator { get; set; }
-        // Used only for xml Serialization
-        //public string OperatorName { get { return Operator.GetType().ToString(); } set; }
+
         public string OperatorName { get; set; }
 
         public string contextContain { get; set; }
         public string key { get; set; }
         public Object ComparedObject { get; set; }
         public int id { get; set; }
+
+        // conflict resolve 
+        public bool AutoResolve { get; set; }
+        public string ResolveStringForUI { get; set; }
+        public Object ResolveObject { get; set; }
+        
 
         // Used only for xml Serialization
         public ValidationRule() 
