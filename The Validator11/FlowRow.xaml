@@ -1,19 +1,17 @@
 ﻿<UserControl x:Class="The_Validator11.FlowRow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Height="26" Width="603">
-    <Grid Height="26">
-        <Button HorizontalAlignment="Left" Margin="6,2,0,0" Name="RemoveFlow" Height="18" Width="18" Click="RemoveFlow_Click" Content="X" >
-        </Button>
-        <TextBox HorizontalAlignment="Left" Margin="30,2,0,0" Name="Name" Height="22" Width="150" Text="Flow Name">
-        </TextBox>
-        <ComboBox HorizontalAlignment="Left" Margin="185,2,0,0" Name="Operator" Height="22" Width="50" >
-            <ComboBoxItem>AND</ComboBoxItem>
-            <ComboBoxItem>OR</ComboBoxItem>
-        </ComboBox>
-        <Button Margin="244,5,0,3" Name="AddFlow" Click="AddFlow_Click" Content="+f" HorizontalAlignment="Left" Width="18">
-        </Button>
-        <Button Margin="264,5,321,3" Name="AddRule" Click="AddRule_Click" Content="+r" >
-        </Button>
+    Height="Auto" Width="Auto">
+    <Grid Height="Auto">
+        <WrapPanel Margin="0,4">
+            <Button Name="RemoveFlow" Click="RemoveFlow_Click" Content="X" Height="19" Width="19" Padding="-1" Margin="8,2">            </Button>
+            <TextBox Name="Name" Width="150" Text="Flow Name" Padding="-1,2" >            </TextBox>
+            <ComboBox Name="Operator" Width="50" Margin="8,0">
+                <ComboBoxItem>AND</ComboBoxItem>
+                <ComboBoxItem>OR</ComboBoxItem>
+            </ComboBox>
+            <Button Name="AddFlow" Click="AddFlow_Click" Content="+Flow" HorizontalAlignment="Left" Height="19" Padding="-1" Width="40" Margin="0,0">            </Button>
+            <Button Name="AddRule" Click="AddRule_Click" Content="+Rule" HorizontalAlignment="Left" Height="19" Padding="-1" Width="40" Margin="6,0">            </Button>
+        </WrapPanel>
     </Grid>
 </UserControl>

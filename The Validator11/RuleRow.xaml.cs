@@ -21,7 +21,9 @@ namespace The_Validator11
     /// </summary>
     public partial class RuleRow : UserControl
     {
-        public RuleRow(int id, string key, IOperator op, string contextContain, Object ComparedObject)
+        private WrapPanel ParentWrapPanel;
+
+        public RuleRow(int id, string key, IOperator op, string contextContain, Object ComparedObject, WrapPanel ParentWrapPanel)
         {
             InitializeComponent();
             SetComboValues();
@@ -31,6 +33,8 @@ namespace The_Validator11
             setOperatorComboValue(op);
             ObjectValue.Text = ComparedObject.ToString();
             setTypeComboValue(contextContain);
+
+            this.ParentWrapPanel = ParentWrapPanel;
         }
     
         private void setOperatorComboValue(IOperator op)
@@ -92,5 +96,18 @@ namespace The_Validator11
         {
             return new ValidatorCoreLib.ValidationRule(Convert.ToInt32(ID.Text), getTypeFromCombo(), Name.Text, ObjectValue.Text, getOperatorFromCombo());
         }
+
+        private void OnX_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (UIElement child in ParentWrapPanel.Children)
+            {
+                if (child.Equals(this))
+                {
+                    ParentWrapPanel.Children.Remove(child);
+                    return; // done here!
+                }
+            }
+            
+        }        
     }
 }

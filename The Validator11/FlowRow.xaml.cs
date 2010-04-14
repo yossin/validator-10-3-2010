@@ -47,9 +47,26 @@ namespace The_Validator11
 
         private void AddRule_Click(object sender, RoutedEventArgs e)
         {
-            TreeViewItem Newitem = new TreeViewItem();
-            RuleRow rr = new RuleRow(0, "0", new EqualOperator(), "System.Int32", "0");
-            tvItem.Items.Add(rr);
+            WrapPanel wp = new WrapPanel();
+            bool WrapPanelFound = false ;
+            foreach (Object ob in tvItem.Items)
+            {
+                if (ob.GetType().Equals(typeof(WrapPanel)))   // RuleRow
+                {   
+                    wp = (WrapPanel)ob;
+                    WrapPanelFound = true;
+                    break;
+                }
+            }
+
+            if (!WrapPanelFound)
+            {
+                tvItem.Items.Add(wp);
+            }
+ 
+            RuleRow rr = new RuleRow(0, "key", new EqualOperator(), "System.String", "Compared Object", wp);
+            wp.Children.Add(rr);
+            return; // done here!
         }
 
         public ValidatorCoreLib.ValidationFlow GetValidationFlow()
