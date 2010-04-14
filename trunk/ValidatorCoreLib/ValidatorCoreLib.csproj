@@ -67,6 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ResolveObject.cs" />
+    <Compile Include="Resolve.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Flow.cs" />
     <Compile Include="Operators.cs" />
