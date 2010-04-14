@@ -5,39 +5,33 @@
       <flows />
       <rules>
         <ValidationRule>
-          <OperatorName>ValidatorCoreLib.GreaterOrEqualOperator</OperatorName>
-          <contextContain>System.Int32</contextContain>
-          <key>Property 1</key>
-          <ComparedObject xsi:type="xsd:int">5</ComparedObject>
-          <id>1</id>
-        </ValidationRule>
-        <ValidationRule>
-          <OperatorName>ValidatorCoreLib.LowerOrEqualOperator</OperatorName>
-          <contextContain>System.Int32</contextContain>
-          <key>Property 1</key>
-          <ComparedObject xsi:type="xsd:int">15</ComparedObject>
-          <id>2</id>
-        </ValidationRule>
-      </rules>
-      <UseAndOperator>true</UseAndOperator>
-      <Name>Int Check</Name>
-    </ValidationFlow>
-    <ValidationFlow>
-      <flows />
-      <rules>
-        <ValidationRule>
           <OperatorName>ValidatorCoreLib.EqualOperator</OperatorName>
-          <contextContain>System.string</contextContain>
-          <key>Property 2</key>
-          <ComparedObject xsi:type="xsd:string">value to compare</ComparedObject>
-          <id>3</id>
+          <contextContain>System.Int32</contextContain>
+          <key>0</key>
+          <ComparedObject xsi:type="xsd:string">0</ComparedObject>
+          <id>0</id>
         </ValidationRule>
       </rules>
       <UseAndOperator>true</UseAndOperator>
-      <Name>String Check</Name>
+      <Name>New Flow</Name>
     </ValidationFlow>
   </flows>
-  <rules />
+  <rules>
+    <ValidationRule>
+      <OperatorName>ValidatorCoreLib.EqualOperator</OperatorName>
+      <contextContain>System.Int32</contextContain>
+      <key>0</key>
+      <ComparedObject xsi:type="xsd:string">0</ComparedObject>
+      <id>0</id>
+    </ValidationRule>
+    <ValidationRule>
+      <OperatorName>ValidatorCoreLib.EqualOperator</OperatorName>
+      <contextContain>System.Int32</contextContain>
+      <key>0</key>
+      <ComparedObject xsi:type="xsd:string">0</ComparedObject>
+      <id>0</id>
+    </ValidationRule>
+  </rules>
   <UseAndOperator>true</UseAndOperator>
-  <Name>Main Flow</Name>
+  <Name>sdadsa</Name>
 </ValidationFlow>
