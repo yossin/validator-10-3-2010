@@ -10,18 +10,46 @@
                 <Button Name="Save" Click="OnSave" Margin="86,5,0,0" Background="LightGray" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="75">Save</Button>
             </Grid>
             
-            <TabControl Name="tabs" Margin="6,0,0,0" Background="LightGray">
+            <TabControl Name="tabs" Margin="6,0,6,6" Background="LightGray">
                 <TabItem Header="Flows" Name="FlowTab"  Background="LightGray">
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
-                    <WrapPanel>
-                        <TreeViewItem Header="" Name="Flow_TreeViewItem" SizeChanged="FlowTreeSizeChanged">
-                        </TreeViewItem>
-                    </WrapPanel>
-                    </ScrollViewer>
+                    <DockPanel>
+                   <!--   
+                        <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Stretch">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="22" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="50" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox Name="TextBlock"       Grid.Row="0" Grid.Column="0"    Height="20" ></TextBox>
+                            <Button Name="ExportText"       Grid.Row="0" Grid.Column="1"    IsEnabled="False" Height="20">Edit</Button>
+                            
+                        </Grid> 
+                -->
+                        
+                        <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                            <TreeViewItem Header="" Name="Flow_TreeViewItem" SizeChanged="FlowTreeSizeChanged">
+                            </TreeViewItem>
+                        </ScrollViewer>
+                        
+                    </DockPanel>
+                    
                 </TabItem>
                 
                 <TabItem Header="Convertion" Name="ConvertionTableTab" Background="LightGray">
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+                <DockPanel>
+                    <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                        <TreeViewItem Header="" Name="Convertion_TreeViewItem">
+                        </TreeViewItem>
+                    </ScrollViewer>
+
+                </DockPanel>
+<!--
+
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
                     <WrapPanel >
                         <Grid ShowGridLines="True" Background="LightBlue" Name="ConvertionGrid" Width="Auto" Height="Auto">
                             <Grid.ColumnDefinitions>
@@ -32,6 +60,7 @@
                     </Grid>
                     </WrapPanel>
                 </ScrollViewer>
+                    -->
             </TabItem>
             </TabControl>
 

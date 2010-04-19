@@ -63,8 +63,9 @@ namespace The_Validator11
             {
                 tvItem.Items.Add(wp);
             }
- 
-            RuleRow rr = new RuleRow(0, "key", new EqualOperator(), "System.String", "Compared Object", wp);
+
+            ValidatorCoreLib.ValidationRule rule = new ValidatorCoreLib.ValidationRule(0, "System.String", "key", "Compared Object", new EqualOperator(), true, @"");
+            RuleRow rr = new RuleRow(rule, wp);
             wp.Children.Add(rr);
             return; // done here!
         }

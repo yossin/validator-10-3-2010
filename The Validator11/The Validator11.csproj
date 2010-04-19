@@ -82,6 +82,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ConvertionClassItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ColoredObjectRow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ColoredObjectRow_AddNew.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResolveObjectRow_AddNew.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResolveObjectRow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="RuleRow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,10 +132,24 @@
       <DependentUpon>ConvertionGridRow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConvertionGridData.cs" />
+    <Compile Include="ConvertionClassItem.xaml.cs">
+      <DependentUpon>ConvertionClassItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColoredObjectRow.xaml.cs">
+      <DependentUpon>ColoredObjectRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColoredObjectRow_AddNew.xaml.cs">
+      <DependentUpon>ColoredObjectRow_AddNew.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResolveObjectRow_AddNew.xaml.cs">
+      <DependentUpon>ResolveObjectRow_AddNew.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResolveObjectRow.xaml.cs">
+      <DependentUpon>ResolveObjectRow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RuleRow.xaml.cs">
       <DependentUpon>RuleRow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MockValidatorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -183,6 +217,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\plus.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\minus.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
