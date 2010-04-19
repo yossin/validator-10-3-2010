@@ -11,33 +11,29 @@ namespace ValidatorCoreLib
     [Serializable(), XmlRoot("ValidationResolve", Namespace = "ValidatorCoreLib", IsNullable = false)]
     public class ValidationResolve
     {
-        public string contextContain { get; set; }
-        public string key { get; set; }
+        // ConflictedObject - used to return array of ValidationResolve with the contex to the SDK
+        [System.Xml.Serialization.XmlIgnoreAttribute]
         public Object ConflictedObject { get; set; }
-        public int id { get; set; }
 
         // conflict resolve 
         public bool AutoResolve { get; set; }
-
-        public List<ValidationResolveObject> ResolveObjects = new List<ValidationResolveObject>();
-
+        public string ResolveStringForUI { get; set; }
+        public List<Object> ResolveObjects = new List<Object>();
+        public int ResolveObjectSelected = -1;
         // Used only for xml Serialization
         public ValidationResolve() 
         {
         }
 
-        public ValidationResolve(int nRuleID, string contextContain, string key, Object conflictedObject, bool AutoResolve)
+        public ValidationResolve(bool AutoResolve, string ResolveStringForUI)
         {
-            this.id = nRuleID;
-            this.contextContain = contextContain;
-            this.key = key;
-            this.ConflictedObject = conflictedObject;
             this.AutoResolve = AutoResolve;
+            this.ResolveStringForUI = ResolveStringForUI;
         }
 
-        public void AddResolveObjects(ValidationResolveObject resolveObjects)
+        public void AddResolveObject(Object resolveObject)
         {
-            ResolveObjects.Add(resolveObjects);
+            ResolveObjects.Add(resolveObject);
         }
 
         public void ClearResolveObjects()

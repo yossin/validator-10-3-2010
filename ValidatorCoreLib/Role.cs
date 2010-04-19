@@ -32,10 +32,7 @@ namespace ValidatorCoreLib
         public int id { get; set; }
 
         // conflict resolve 
-        public bool AutoResolve { get; set; }
-        public string ResolveStringForUI { get; set; }
-        public Object ResolveObject { get; set; }
-        
+        public ValidationResolve validationResolve{ get; set; }         
 
         // Used only for xml Serialization
         public ValidationRule() 
@@ -43,7 +40,7 @@ namespace ValidatorCoreLib
             this.Operator = OperatorHelper.GetOperator(this.OperatorName);
         }
 
-        public ValidationRule(int nRuleID, string contextContain, string key, Object comparedObject, IOperator op)
+        public ValidationRule(int nRuleID, string contextContain, string key, Object comparedObject, IOperator op, bool AutoResolve, string ResolveStringForUI)
         {
             this.id = nRuleID;
             this.Operator = op;
@@ -51,6 +48,7 @@ namespace ValidatorCoreLib
             this.contextContain = contextContain;
             this.key = key;            
             this.ComparedObject = comparedObject;
+            validationResolve = new ValidationResolve(AutoResolve, ResolveStringForUI);
         }
 
         public bool Validate(ContextTable contextTable)
@@ -62,5 +60,4 @@ namespace ValidatorCoreLib
             return Operator.Evaluate(comparableToCheck, comparableComaredObject);
         }
     }
-
 }

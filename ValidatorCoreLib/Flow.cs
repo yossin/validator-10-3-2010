@@ -30,7 +30,7 @@ namespace ValidatorCoreLib
 
         public bool Validate(ContextTable contextTable)
         {
-            bool Res = UseAndOperator ? true : false;
+            bool Res     = UseAndOperator ? true : false;
 
             foreach (ValidationFlow flow in flows)
             {
