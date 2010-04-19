@@ -50,8 +50,6 @@ namespace ValidatorCoreLib
         }
     }
 
-    
-
     public class GreaterOperator : Operator
     {
         protected override bool OperatorEvaluation(IComparable obj1, IComparable obj2)
