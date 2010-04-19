@@ -219,10 +219,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="img\plus.jpg" />
+    <Resource Include="plus.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="img\minus.jpeg" />
+    <Resource Include="minus.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
