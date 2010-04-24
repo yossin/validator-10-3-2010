@@ -33,5 +33,10 @@ namespace The_Validator11
         {
             parentRuleRow.RemoveResoveObject(this);
         }
+
+        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+
+        }
     }
 }

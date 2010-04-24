@@ -4,8 +4,10 @@
     Height="19" Width="Auto">
     <Grid Height="Auto">
         <WrapPanel Margin="0,0" Background="White" >
-            <Button Name="RemoveResolveRow" Click="RemoveObjectRow_Click" Height="8.75" Width="12" Padding="-5" Margin="0,2"><Image Source="img\minus.jpeg"></Image>            </Button>
-            <TextBox Name="ResolveValue" Padding="0,2" Height="19" Width="98" Text="Value" BorderThickness="0" >            </TextBox>
+            <Button Name="RemoveResolveRow" Click="RemoveObjectRow_Click" Height="8.75" Width="12" Padding="-5" Margin="0,2">
+                <Image Source="minus.jpeg" ImageFailed="Image_ImageFailed"></Image>           
+            </Button>
+            <TextBox Name="ResolveValue" Padding="0,2" Height="19" Width="98" Text="Value" BorderThickness="0" ></TextBox>
         </WrapPanel>
     </Grid>
 </UserControl>

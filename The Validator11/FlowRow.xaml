@@ -4,14 +4,14 @@
     Height="Auto" Width="Auto">
     <Grid Height="Auto">
         <WrapPanel Margin="0,4">
-            <Button Name="RemoveFlow" Click="RemoveFlow_Click" Content="X" Height="19" Width="19" Padding="-1" Margin="8,2">            </Button>
-            <TextBox Name="Name" Width="150" Text="Flow Name" Padding="-1,2" >            </TextBox>
+            <Button Name="RemoveFlow" Click="RemoveFlow_Click" Content="X" Height="19" Width="19" Padding="-1" Margin="8,2"></Button>
+            <TextBox Name="Name" Width="150" Text="Flow Name" Padding="-1,2" ></TextBox>
             <ComboBox Name="Operator" Width="50" Margin="8,0">
                 <ComboBoxItem>AND</ComboBoxItem>
                 <ComboBoxItem>OR</ComboBoxItem>
             </ComboBox>
-            <Button Name="AddFlow" Click="AddFlow_Click" Content="+Flow" HorizontalAlignment="Left" Height="19" Padding="-1" Width="40" Margin="0,0">            </Button>
-            <Button Name="AddRule" Click="AddRule_Click" Content="+Rule" HorizontalAlignment="Left" Height="19" Padding="-1" Width="40" Margin="6,0">            </Button>
+            <Button Name="AddFlow" Click="AddFlow_Click" Content="+Flow" HorizontalAlignment="Left" Height="19" Padding="-1" Width="40" Margin="0,0"></Button>
+            <Button Name="AddRule" Click="AddRule_Click" Content="+Rule" HorizontalAlignment="Left" Height="19" Padding="-1" Width="40" Margin="6,0"></Button>
         </WrapPanel>
     </Grid>
 </UserControl>
