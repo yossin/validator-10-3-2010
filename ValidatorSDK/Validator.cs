@@ -7,18 +7,11 @@ using ValidatorCoreLib;
 
 namespace ValidatorSDK
 {
-    
-
     public class Validator
     {
-        ValidationFlow flow;
-        public Validator(ValidationFlow flow)
+        public static ValidationResult Validate(ValidationData data)
         {
-            this.flow = flow;
-        }
-        public ValidationResult Validate(ValidationData data)
-        {
-            if (flow.Validate(data.Contexts))
+            if (data.flow.Validate(data.Contexts))
             {
                 return new ValidationResult("Has NO conflict");
             }
