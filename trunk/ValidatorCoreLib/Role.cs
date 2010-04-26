@@ -54,6 +54,8 @@ namespace ValidatorCoreLib
         public bool Validate(ContextTable contextTable)
         {
             Object obj_context = contextTable.Get(key);
+            if ( obj_context == null ) 
+                return true ;
             Object obj_to_check = ContextTable.ExtractObject(contextContain, obj_context);
             IComparable comparableToCheck = (IComparable)obj_to_check;
             IComparable comparableComaredObject = (IComparable)ComparedObject;
