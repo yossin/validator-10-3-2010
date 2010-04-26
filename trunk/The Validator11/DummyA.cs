@@ -8,7 +8,7 @@ namespace HostSysSim
     class DummyA
     {
         public string Dummy_string { get; set; }
-        DummyA(string sVal)
+        public DummyA(string sVal)
         {
             Dummy_string = sVal;
         }

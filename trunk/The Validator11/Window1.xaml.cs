@@ -26,7 +26,7 @@ namespace HostSysSim
     ///         
     public partial class Window1 : Window
     {
-
+        public const string sLoadFolder = @"c:\";
         public const string sFileHostSysSimData             = @"c:\HostSysSimData.xml";
         HostSysSimData hssd = new HostSysSimData();
  
@@ -109,6 +109,51 @@ namespace HostSysSim
             XmlSerializer s = new XmlSerializer(typeof(HostSysSimData));
             s.Serialize(w, hssd);
             w.Close();
+        }
+
+        private void OnValidate(object sender, RoutedEventArgs e)
+        {
+            hssd.ClearPropRowData();
+            GetHostSysSimDataFromTree(Prop_TreeViewItem);
+            hssd.GetValidationData(validationData);
+            if (LoadFlow() && LoadConvertionComparedItems() && LoadConvertion())  // Load validation data
+            {
+                ValidatorSDK.ValidationResult result = Validator.Validate(validationData);
+                MessageBox.Show(result.Message, "File load error", MessageBoxButton.OK);
+            }
+        }
+
+        private bool LoadFlow()
+        {
+            if (!validationData.LoadValidationFlow(sLoadFolder))
+            {
+                string sMsg = ValidatorSDK.ValidationData.sFileFlow + @" doesn't exist";
+                MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK);
+                return true;
+            }
+            return true ;
+        }
+
+        private bool LoadConvertion()
+        {
+            if ( !validationData.LoadValidationConvertionItems(sLoadFolder) )
+            {
+                string sMsg = ValidatorSDK.ValidationData.sFileConvertion + @" doesn't exist";
+                MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
+                return true;
+            }
+            return true ;
+        }
+
+        private bool LoadConvertionComparedItems()
+        {
+            if ( ! validationData.LoadConvertionComparedItems(sLoadFolder) )
+            {
+                string sMsg = ValidatorSDK.ValidationData.sFileConvertionComparedItems + @" doesn't exist";
+                MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
+                return true;
+            }
+            return true ;
         }
     }
 }

@@ -11,10 +11,6 @@ namespace HostSysSim
     [Serializable(), XmlRoot("PropRowData", Namespace = "ValidatorCoreLib", IsNullable = false)]
     public class PropRowData
     {
-        // ConflictedObject - used to return array of ValidationResolve with the contex to the SDK
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        public Object ConflictedObject { get; set; }
-
         // conflict resolve 
         public string Key { get; set; }
         public int RadioBChecked { get; set; }
