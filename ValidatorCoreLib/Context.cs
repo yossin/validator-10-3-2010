@@ -17,7 +17,9 @@ namespace ValidatorCoreLib
 
         public Object Get(string key)
         {
-            return objectByKey[key];
+            if (objectByKey.ContainsKey(key))
+                return objectByKey[key];
+            return null;
         }
 
         public void Clear()
