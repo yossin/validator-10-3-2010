@@ -18,7 +18,7 @@ using System.Xml.Serialization;
 using ValidatorSDK;
 using ValidatorCoreLib;
 
-namespace HostSysSim
+namespace The_Validator11
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
@@ -27,133 +27,254 @@ namespace HostSysSim
     public partial class Window1 : Window
     {
         public const string sLoadFolder = @"c:\";
-        public const string sFileHostSysSimData             = @"c:\HostSysSimData.xml";
-        HostSysSimData hssd = new HostSysSimData();
  
         ValidationData validationData = new ValidationData();
 
         public Window1()
         {
             InitializeComponent();
-            AddEmptyPropTree();
+            CreateEmpteFlowTree();
+            CreateEmpteConvertionTree();
         }
 
-        private void AddEmptyPropTree()
+        private void CreateEmpteFlowTree()
         {
-            Prop_TreeViewItem.IsExpanded = true;
-            PropRow_AddNew pr = new PropRow_AddNew(Prop_TreeViewItem);
-            Prop_TreeViewItem.Items.Add(pr);
+            FlowRow fr = new FlowRow("New Flow", true, Flow_TreeViewItem);
+            fr.RemoveFlow.IsEnabled = false;
+            Flow_TreeViewItem.Header = fr;
+            Flow_TreeViewItem.IsExpanded = true;
+        }
+        
+        private void CreateEmpteConvertionTree()
+        {
+            ConvertionClassItem cci = new ConvertionClassItem(@"New Convertion Item", @"Name",0 , validationData.convertionComparedItems, Convertion_TreeViewItem, Convertion_TreeViewItem);
+            cci.RemoveConvertionClassItem.IsEnabled = false;
+            Convertion_TreeViewItem.Header = cci;
+            Convertion_TreeViewItem.IsExpanded = true;
         }
 
         private void OnLoad(object sender, RoutedEventArgs e)
         {
+            // load flow
+            LoadFlow();
 
-            if (File.Exists(sFileHostSysSimData))
-            {
-                LoadPropData(sFileHostSysSimData);
-                AddPropsToGUI(Prop_TreeViewItem);
-                AddEmptyPropTree();
-            }
-            else
-            {
-                string sMsg = sFileHostSysSimData + @" doesn't exist";
-                MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK);
-            }
+            LoadConvertionComparedItems();
+
+            UpdateConvertionComparedItemsFromFlow(validationData);
+            
+            LoadConvertion();
         }
 
-        private void LoadPropData(string sFile)
-        {
-            // deSerialize
-            TextReader w2 = new StreamReader(sFile);
-            XmlSerializer s2 = new XmlSerializer(typeof(HostSysSimData));
-            hssd = (HostSysSimData)s2.Deserialize(w2);
-            w2.Close();
-        }
-
-        private void AddPropsToGUI(TreeViewItem tvi)
-        {
-            tvi.Items.Clear();
-            tvi.IsExpanded = true;
-            foreach (PropRowData prd in hssd.PropRowsData)
-            {
-                PropRow pr = new PropRow(prd, tvi);
-                tvi.Items.Add(pr);
-            }
-        }
-
-        private void OnSave(object sender, RoutedEventArgs e)
-        {
-            hssd.ClearPropRowData();
-
-            GetHostSysSimDataFromTree(Prop_TreeViewItem);
-            SaveHostSysSimData(sFileHostSysSimData);
-        }
-
-        private void GetHostSysSimDataFromTree(TreeViewItem tvi)
-        {
-            foreach (Object ob in tvi.Items)
-            {
-                if (ob.GetType().Equals(typeof(PropRow)))
-                {
-                    PropRow pr = (PropRow)ob;
-                    PropRowData prd = pr.GetPropRowData();
-                    hssd.AddPropRowData(prd);
-                }
-            }
-        }
-
-        private void SaveHostSysSimData(string sFile)
-        {
-            // Serialize
-            TextWriter w = new StreamWriter(sFile);
-            XmlSerializer s = new XmlSerializer(typeof(HostSysSimData));
-            s.Serialize(w, hssd);
-            w.Close();
-        }
-
-        private void OnValidate(object sender, RoutedEventArgs e)
-        {
-            hssd.ClearPropRowData();
-            GetHostSysSimDataFromTree(Prop_TreeViewItem);
-            hssd.GetValidationData(validationData);
-            if (LoadFlow() && LoadConvertionComparedItems() && LoadConvertion())  // Load validation data
-            {
-                ValidatorSDK.ValidationResult result = Validator.Validate(validationData);
-                MessageBox.Show(result.Message, "File load error", MessageBoxButton.OK);
-            }
-        }
-
-        private bool LoadFlow()
+        private void LoadFlow()
         {
             if (!validationData.LoadValidationFlow(sLoadFolder))
             {
                 string sMsg = ValidatorSDK.ValidationData.sFileFlow + @" doesn't exist";
                 MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK);
-                return true;
             }
-            return true ;
+            else
+            {
+                Flow_TreeViewItem.Items.Clear();
+                AddFlowsAndRules(validationData.flow, Flow_TreeViewItem);
+                ((FlowRow)Flow_TreeViewItem.Header).RemoveFlow.IsEnabled = false;
+                Change_FlowTreeItemsSize(Flow_TreeViewItem, tabs.ActualWidth);
+            }
         }
 
-        private bool LoadConvertion()
+        private void LoadConvertion()
         {
-            if ( !validationData.LoadValidationConvertionItems(sLoadFolder) )
+            Convertion_TreeViewItem.Items.Clear();
+
+            if ( validationData.LoadValidationConvertionItems(sLoadFolder) )
+            {
+                AddConvertion(validationData.convertionItem, validationData.convertionComparedItems, Convertion_TreeViewItem);
+                ((ConvertionClassItem)Convertion_TreeViewItem.Header).RemoveConvertionClassItem.IsEnabled = false;
+            }
+            else
             {
                 string sMsg = ValidatorSDK.ValidationData.sFileConvertion + @" doesn't exist";
                 MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
-                return true;
             }
-            return true ;
         }
 
-        private bool LoadConvertionComparedItems()
+        private void LoadConvertionComparedItems()
         {
+            validationData.convertionComparedItems.Clear();
+ 
             if ( ! validationData.LoadConvertionComparedItems(sLoadFolder) )
             {
                 string sMsg = ValidatorSDK.ValidationData.sFileConvertionComparedItems + @" doesn't exist";
                 MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
-                return true;
             }
-            return true ;
+        }
+
+        private void OnSave(object sender, RoutedEventArgs e)
+        {
+            validationData.Clear();
+
+            if (!GetValidationFlowFromTree(validationData.flow, Flow_TreeViewItem))
+                validationData.flow = null;
+            else
+                validationData.SaveFlowData(sLoadFolder);
+
+            if (!GetValidationConvertionItemFromTree(validationData.convertionItem, Convertion_TreeViewItem))
+                validationData.convertionItem = null;
+            else
+                validationData.SaveConvertionData(sLoadFolder);
+
+            if (!GetConvertionComparedItems(validationData.convertionComparedItems))
+                validationData.convertionItem = null;
+            else
+                validationData.SaveConvertionComparedItemsData(sLoadFolder);
+        }
+
+        // return false when the flow is empty and should be removed(caller resposability)
+        private bool GetValidationFlowFromTree(ValidatorCoreLib.ValidationFlow flow, TreeViewItem tvi)
+        {
+            if (tvi.Header == null)
+                return false;
+
+            ValidatorCoreLib.ValidationFlow copiedFlow = (((FlowRow)tvi.Header)).GetValidationFlow();
+            flow.Name = copiedFlow.Name;
+            flow.UseAndOperator = copiedFlow.UseAndOperator;
+
+            foreach (Object ob in tvi.Items)
+            {
+                if (ob.GetType().Equals(typeof(WrapPanel)))   // RuleRow
+                {
+                    WrapPanel wp = (WrapPanel)ob;
+                    foreach (UIElement child in wp.Children)
+                    {
+                        flow.rules.Add(((RuleRow)child).GetValidationRule());
+                    }
+                }
+                else  // flow
+                {
+                    ValidatorCoreLib.ValidationFlow flowToAdd = new ValidatorCoreLib.ValidationFlow();
+                    if (GetValidationFlowFromTree(flowToAdd, (TreeViewItem)ob))
+                        flow.flows.Add(flowToAdd);
+                }
+            }
+            return true;
+        }
+
+        // return false when the ConvertionItem is empty and should be removed(caller resposability)
+        private bool GetValidationConvertionItemFromTree(ValidatorCoreLib.ValidationConvertionItem convertionItem, TreeViewItem tvi)
+        {
+            if (tvi.Header == null)
+                return false;
+
+            ValidatorCoreLib.ValidationConvertionItem copiedConvertionItem = (((ConvertionClassItem)tvi.Header)).GetConvertionItem();
+            convertionItem.convertionItemName = copiedConvertionItem.convertionItemName;
+            convertionItem.convertTo = copiedConvertionItem.convertTo;
+
+            foreach (Object ob in tvi.Items)
+            {
+                if (ob.GetType().Equals(typeof(TreeViewItem)))  // ConvertionItem
+                {
+                    ValidatorCoreLib.ValidationConvertionItem convertionItemAdd = new ValidatorCoreLib.ValidationConvertionItem();
+                    if (GetValidationConvertionItemFromTree(convertionItemAdd, (TreeViewItem)ob))
+                        convertionItem.Add(convertionItemAdd);
+                }
+            }
+            return true;
+        }
+        
+        // return false when the ConvertionItem is empty and should be removed(caller resposability)
+        private bool GetConvertionComparedItems(ValidatorCoreLib.ConvertionComparedItems convertionComparedItems)
+        {
+            convertionComparedItems.Clear();
+            ((ConvertionClassItem)Convertion_TreeViewItem.Header).GetConvertionComparedItems(convertionComparedItems);
+            return true;
+        }       
+
+        private void AddFlowsAndRules(ValidatorCoreLib.ValidationFlow in_flow, TreeViewItem tvi)
+        {
+            FlowRow fr = new FlowRow(in_flow.Name, in_flow.UseAndOperator, tvi);
+            tvi.Header = fr;
+            tvi.IsExpanded = true;
+
+            WrapPanel RuleWrapPanel = new WrapPanel();
+
+            foreach (ValidatorCoreLib.ValidationRule rule in in_flow.rules)
+            {
+                RuleRow rr = new RuleRow(rule, RuleWrapPanel);
+                RuleWrapPanel.Children.Add(rr);
+                //tvi.Items.Add(rr);
+            }
+            tvi.Items.Add(RuleWrapPanel);
+
+            foreach (ValidatorCoreLib.ValidationFlow flow in in_flow.flows)
+            {
+                TreeViewItem Newitem = new TreeViewItem();
+                Newitem.IsExpanded = true;
+                AddFlowsAndRules(flow, Newitem);
+                tvi.Items.Add(Newitem);
+            }
+        }
+
+        private void AddConvertion(ValidatorCoreLib.ValidationConvertionItem vci, ConvertionComparedItems convertionComparedItems, TreeViewItem tvi)
+        {
+            int nSelectedComboIndex = validationData.convertionComparedItems.IsItemExist(vci.convertTo);
+            ConvertionClassItem cci = new ConvertionClassItem(vci.convertionItemName, vci.convertTo, nSelectedComboIndex, validationData.convertionComparedItems, tvi, Convertion_TreeViewItem);
+            tvi.Header = cci;
+            tvi.IsExpanded = true;
+ 
+            foreach (ValidatorCoreLib.ValidationConvertionItem chiled_vci in vci.convertionItems)
+            {
+                TreeViewItem Newitem = new TreeViewItem();
+                Newitem.IsExpanded = true;
+                AddConvertion(chiled_vci, convertionComparedItems, Newitem);
+                tvi.Items.Add(Newitem);
+            }
+        }
+
+        private double nWidthToRemove = 30;
+        private void FlowTreeSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Change_FlowTreeItemsSize(Flow_TreeViewItem, e.NewSize.Width - nWidthToRemove);
+        }
+
+        private void Change_FlowTreeItemsSize(TreeViewItem tvi, double nWidth)
+        {
+            foreach (Object ob in tvi.Items)
+            {
+                if (ob.GetType().Equals(typeof(WrapPanel)))
+                {
+                    WrapPanel wp  = (WrapPanel)ob ;
+                    wp.Width = nWidth ;
+                }
+                else  // flow = TreeViewItem
+                {
+                    Change_FlowTreeItemsSize((TreeViewItem)ob, nWidth - nWidthToRemove);
+                }
+            }
+        }
+
+        public void GetPathListFromAllRules(TreeViewItem tvi, List<string> PathList)
+        {
+            if (tvi.Header == null)
+                return;
+
+            foreach (Object ob in tvi.Items)
+            {
+                if (ob.GetType().Equals(typeof(WrapPanel)))   // RuleRow
+                {
+                    WrapPanel wp = (WrapPanel)ob;
+                    foreach (UIElement child in wp.Children)
+                        PathList.Add(((RuleRow)child).ProperyPath.Text);
+                }
+                else  // flow
+                    GetPathListFromAllRules((TreeViewItem)ob, PathList);
+            }
+        }
+
+        public void UpdateConvertionComparedItemsFromFlow(ValidationData validationData)
+        {
+            List<string> PathList = new List<string>();
+            GetPathListFromAllRules(Flow_TreeViewItem, PathList);
+
+            validationData.convertionComparedItems.Add(PathList, ConvertionCompareItemsContainer.ConvertionCompareItemType.FromFlow);
         }
     }
 }
