@@ -46,7 +46,7 @@ namespace HostSysSim
 
         public PropRowData GetPropRowData()
         {
-            int nRadioSelected = (rb1.IsChecked == true) ? 0 : (rb2.IsChecked == true) ? 1 : (rb3.IsChecked == true) ? 2 : 1 ;
+            int nRadioSelected = (rb1.IsChecked == true) ? 0 : (rb2.IsChecked == true) ? 1 : (rb3.IsChecked == true) ? 2 : 3 ;
 
             PropRowData prd = new PropRowData(PropKey.Text, nRadioSelected, StringData.Text, 
                 Convert.ToInt32(IntData.Text), (float)(Convert.ToDouble(FloatData.Text)), 
