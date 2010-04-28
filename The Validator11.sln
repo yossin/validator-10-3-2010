@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidatorCoreLib", "Validat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidatorSDK", "ValidatorSDK\ValidatorSDK.csproj", "{61F5D2AF-4AC1-4FC1-8C81-C6669159BB57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostSysSim", "HostSysSim\HostSysSim.csproj", "{E3FE3977-3121-4974-9EE8-61697D1BD45B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostSysSim", "HostSysSimulator\HostSysSim.csproj", "{E3FE3977-3121-4974-9EE8-61697D1BD45B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
