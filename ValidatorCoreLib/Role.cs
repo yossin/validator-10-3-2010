@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Xml;
 using System.Xml.Serialization;
-    
+using TheValidatorCoreLib;
+using TheValidatorCoreLib.ValidationErrorEvents;
+
 namespace ValidatorCoreLib
 {
     // input:
@@ -19,14 +16,14 @@ namespace ValidatorCoreLib
     //
     // the rule is a set of definitions to check object data
     [Serializable(), XmlRoot("ValidationRule", Namespace = "ValidatorCoreLib", IsNullable = false)]
-    public class ValidationRule
+    public class ValidationRule : ValidationProcess
     {
         [System.Xml.Serialization.XmlIgnoreAttribute]
         public IOperator Operator { get; set; }
 
         public string OperatorName { get; set; }
 
-        public string contextContain { get; set; }
+        public string PropertiesPath { get; set; }
         public string key { get; set; }
         public Object ComparedObject { get; set; }
         public int id { get; set; }
@@ -45,21 +42,80 @@ namespace ValidatorCoreLib
             this.id = nRuleID;
             this.Operator = op;
             this.OperatorName = op.GetType().ToString();
-            this.contextContain = contextContain;
+            this.PropertiesPath = contextContain;
             this.key = key;            
             this.ComparedObject = comparedObject;
             validationResolve = new ValidationResolve(AutoResolve, ResolveStringForUI);
         }
 
-        public bool Validate(ContextTable contextTable)
+        public bool Validate(ValidationRequest request, ValidationResult result)
         {
-            Object obj_context = contextTable.Get(key);
-            if ( obj_context == null ) 
-                return true ;
-            Object obj_to_check = ContextTable.ExtractObject(contextContain, obj_context);
-            IComparable comparableToCheck = (IComparable)obj_to_check;
-            IComparable comparableComaredObject = (IComparable)ComparedObject;
-            return Operator.Evaluate(comparableToCheck, comparableComaredObject);
+            ObjectBinder binder = request.Binder;
+            // todo: check IComparable casting is possible
+            IComparable comparableComaredObject = null;
+            IComparable comparableToCheck = null;
+            // bind 1st object
+            try {
+                comparableToCheck = binder.Bind(key, PropertiesPath);
+            }catch (Exception e)
+            {
+                result.AddErrorEvent(new UnableToBindEvent(e, this, new ObjectSelection(key,PropertiesPath),1));
+                return false;
+            }
+
+            
+            if (ComparedObject.GetType().Equals(typeof(ObjectSelection)))
+            {
+                // bind 2nd object
+                ObjectSelection selected = (ObjectSelection)ComparedObject;
+                try
+                {
+                    comparableComaredObject = binder.Bind(selected);
+                }
+                catch (Exception e)
+                {
+                    result.AddErrorEvent(new UnableToBindEvent(e, this, selected, 2));
+                    return false;
+                }
+            }
+            else
+            {
+                // set 2nd object
+                try
+                {
+                    comparableComaredObject = (IComparable)ComparedObject;
+                }
+                catch (Exception e)
+                {
+                    result.AddErrorEvent(new RuleRuntimeErrorEvent(e, this, comparableToCheck, comparableComaredObject));
+                    return false;
+                }
+            }
+
+            // evaluate
+            try
+            {
+                if (Operator.Evaluate(comparableToCheck, comparableComaredObject) == false)
+                {
+                    result.AddErrorEvent(new UnsuccessfulRuleCompletionEvent(this, comparableToCheck, comparableComaredObject));
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                result.AddErrorEvent(new RuleRuntimeErrorEvent(e, this, comparableToCheck, comparableComaredObject));
+                return false;
+            }
         }
+
+        public override string ToString()
+        {
+            return "Rule: id="+this.id+", ContextKey="+this.key+", PropertiesPath="+this.PropertiesPath;
+        }
+
     }
 }
