@@ -70,12 +70,18 @@
     <Compile Include="ConvertionItem.cs" />
     <Compile Include="ConvertionComparedItems.cs" />
     <Compile Include="ConvertionCompareItemsContainer.cs" />
+    <Compile Include="ObjectBinder.cs" />
+    <Compile Include="ObjectSelection.cs" />
     <Compile Include="Resolve.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Flow.cs" />
     <Compile Include="Operators.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationEvents.cs" />
+    <Compile Include="ValidationProcess.cs" />
+    <Compile Include="ValidationRequest.cs" />
+    <Compile Include="ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

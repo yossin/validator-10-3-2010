@@ -5,13 +5,15 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using TheValidatorCoreLib;
+using TheValidatorCoreLib.ValidationErrorEvents;
 
 namespace ValidatorCoreLib
 {
     // flow is a recursive structure that holds rules and know how to do a recursive validation.
     // a flow has a two operator options - and/or to determain the action validation check inside the current recursive check
     [Serializable(), XmlRoot("ValidationFlow", Namespace = "ValidatorCoreLib",IsNullable = false)]
-    public class ValidationFlow
+    public class ValidationFlow : ValidationProcess
     {
         public List<ValidationFlow> flows = new List<ValidationFlow>();
         public List<ValidationRule> rules = new List<ValidationRule>();
@@ -28,26 +30,32 @@ namespace ValidatorCoreLib
             this.UseAndOperator = useAndOperator;
         }
 
-        public bool Validate(ContextTable contextTable)
+        public bool Validate(ValidationRequest request, ValidationResult result)
         {
-            bool Res     = UseAndOperator ? true : false;
+            bool success = UseAndOperator ? true : false;
 
             foreach (ValidationFlow flow in flows)
             {
+                bool lastValidation = flow.Validate(request, result);
                 if (UseAndOperator)
-                    Res &= flow.Validate(contextTable);
+                    success &= lastValidation;
                 else
-                    Res |= flow.Validate(contextTable);
+                    success |= lastValidation;
+                if (lastValidation == false)
+                {
+                    result.AddErrorEvent(new UnsuccessfulFlowCompletionEvent(this));
+                }
             }
             foreach (ValidationRule rule in rules)
             {
                 if (UseAndOperator)
-                    Res &= rule.Validate(contextTable);
+                    success &= rule.Validate(request, result);
                 else
-                    Res |= rule.Validate(contextTable);
+                    success |= rule.Validate(request, result);
             }
-
-            return Res;
+            
+            result.NotifiyFlowValidationEndIteration();
+            return success;
         }
 
         public void Add(ValidationRule rule)
@@ -64,6 +72,11 @@ namespace ValidatorCoreLib
         {
             flows.Clear();
             rules.Clear();
+        }
+
+        public override string ToString()
+        {
+            return this.Name;
         }
     }
     
