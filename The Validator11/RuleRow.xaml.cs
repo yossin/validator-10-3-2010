@@ -32,7 +32,7 @@ namespace The_Validator11
             ProperyPath.Text = rule.key;
             setOperatorComboValue(rule.Operator);
             ObjectValue.Text = rule.ComparedObject.ToString();
-            setTypeComboValue(rule.contextContain);
+            setTypeComboValue(rule.PropertiesPath);
 
             ResolveCheck.IsChecked = rule.validationResolve.AutoResolve;
             if (!rule.validationResolve.AutoResolve)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
-using TheValidatorCoreLib;
-using TheValidatorCoreLib.ValidationErrorEvents;
+using ValidatorCoreLib;
+using ValidatorCoreLib.ValidationErrorEvents;
 
 namespace ValidatorCoreLib
 {
