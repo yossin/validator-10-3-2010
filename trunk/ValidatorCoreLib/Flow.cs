@@ -5,8 +5,8 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using TheValidatorCoreLib;
-using TheValidatorCoreLib.ValidationErrorEvents;
+using ValidatorCoreLib;
+using ValidatorCoreLib.ValidationErrorEvents;
 
 namespace ValidatorCoreLib
 {

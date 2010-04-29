@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 using ValidatorSDK;
 using ValidatorCoreLib;
 
+
 namespace HostSysSim
 {
     /// <summary>
@@ -118,8 +119,10 @@ namespace HostSysSim
             hssd.GetValidationData(validationData);
             if (LoadFlow() && LoadConvertionComparedItems() && LoadConvertion())  // Load validation data
             {
-                ValidatorSDK.ValidationResult result = Validator.Validate(validationData);
-                MessageBox.Show(result.Message, "File load error", MessageBoxButton.OK);
+                ValidatorCoreLib.ValidationResult result = Validator.Validate(validationData);
+                // todo: proceed later
+                MessageBox.Show(result.ToString(), "File load error", MessageBoxButton.OK);
+                //MessageBox.Show(result.Message, "File load error", MessageBoxButton.OK);
             }
         }
 
