@@ -38,7 +38,7 @@ namespace Mock1Test
             ValidationFlow flow11 = new ValidationFlow("person_validations", true);
             flow1.Add(flow11);
 
-            ValidationRule role111 = new ValidationRule(1, "person.name", "person1", "Person", new EqualOperator(), true, "resolve string for ui");
+            ValidationRule role111 = new ValidationRule(1, "PersonName", "person1", "Person", new EqualOperator(), true, "resolve string for ui");
             flow11.Add(role111);
 
             ValidationRule role112 = new ValidationRule(2, "person", "person1", new ObjectSelection("person2","person"), new EqualOperator(), true, "resolve string for ui");
