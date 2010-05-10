@@ -67,11 +67,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindingTree.cs" />
     <Compile Include="ConvertionItem.cs" />
     <Compile Include="ConvertionComparedItems.cs" />
     <Compile Include="ConvertionCompareItemsContainer.cs" />
     <Compile Include="ObjectBinder.cs" />
-    <Compile Include="ObjectSelection.cs" />
+    <Compile Include="PropertySelection.cs" />
     <Compile Include="Resolve.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Flow.cs" />

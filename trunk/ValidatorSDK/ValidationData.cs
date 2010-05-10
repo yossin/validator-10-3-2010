@@ -14,8 +14,7 @@ namespace ValidatorSDK
     {
         public ContextTable Contexts { get; set; }
         public ValidationFlow flow { get; set; }
-        public ValidationConvertionItem convertionItem { get; set; }
-        public ConvertionComparedItems convertionComparedItems { get; set; }
+        public BindingContainer BindingContainer { get; set; }
 
         private static int ii = 1;
 
@@ -23,22 +22,23 @@ namespace ValidatorSDK
         public const string sFileFlow = @"Flow1.xml";
         public const string sFileConvertion = @"Convertion.xml";
         public const string sFileConvertionComparedItems = @"ConvertionComparedItems.xml";
- 
-            
+
+
+        //todo: fix this
         public ValidationData()
         {
             this.Contexts = new ContextTable();
             this.flow = new ValidationFlow((ii++).ToString(), true);
-            this.convertionItem = new ValidationConvertionItem();
-            convertionComparedItems = new ConvertionComparedItems();
+            //this.BindingContainer = new ValidationConvertionItem();
         }
 
-        public ValidationData(ContextTable contexts, ValidationFlow flow, ValidationConvertionItem convertionItem)
+        //todo: fix this
+        public ValidationData(ContextTable contexts, ValidationFlow flow, BindingContainer binding)
         {
             this.Contexts = contexts;
             this.flow = flow;
-            this.convertionItem = convertionItem;
-            convertionComparedItems = new ConvertionComparedItems();
+            this.BindingContainer = binding;
+            //convertionComparedItems = new ConvertionComparedItems();
         }
 
         public void Add(string key, Object obj)
@@ -56,17 +56,14 @@ namespace ValidatorSDK
             flow.Add(rule);
         }
 
-        public void Add(ValidationConvertionItem convertionItemToAdd)
-        {
-            convertionItem.Add(convertionItemToAdd);
-        }
-
+       
+        //todo: fix this
         public void Clear()
         {
             Contexts.Clear();
             flow.Clear();
-            convertionItem.Clear();
-            convertionComparedItems.Clear();
+            //BindingContainer.Clear();
+            //convertionComparedItems.Clear();
 
         }
 
@@ -119,7 +116,8 @@ namespace ValidatorSDK
             // deSerialize
             TextReader w2 = new StreamReader(sFile);
             XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ValidationConvertionItem));
-            convertionItem = (ValidatorCoreLib.ValidationConvertionItem)s2.Deserialize(w2);
+            //todo: fix this
+            //BindingContainer = (ValidatorCoreLib.ValidationConvertionItem)s2.Deserialize(w2);
             w2.Close();
         }
 
@@ -139,7 +137,8 @@ namespace ValidatorSDK
             // deSerialize
             TextReader w2 = new StreamReader(sFile);
             XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionComparedItems));
-            convertionComparedItems = (ValidatorCoreLib.ConvertionComparedItems)s2.Deserialize(w2);
+            //todo: fix this
+//            convertionComparedItems = (ValidatorCoreLib.ConvertionComparedItems)s2.Deserialize(w2);
             w2.Close();
         }
 
@@ -164,7 +163,7 @@ namespace ValidatorSDK
             // Serialize
             TextWriter w = new StreamWriter(sFile);
             XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ValidationConvertionItem));
-            s.Serialize(w, convertionItem);
+            s.Serialize(w, BindingContainer);
             w.Close();
         }
 
@@ -176,7 +175,8 @@ namespace ValidatorSDK
             // Serialize
             TextWriter w = new StreamWriter(sFile);
             XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionComparedItems));
-            s.Serialize(w, convertionComparedItems);
+            //todo: fix this
+//            s.Serialize(w, convertionComparedItems);
             w.Close();
         }
 

@@ -12,82 +12,126 @@ namespace ValidatorSDK
     public class Validator
     {
 
-        public class Entity2ClassMapping
+
+        class PropertyBinder
         {
-            public Entity2ClassMapping(string entityName, string className)
+            string propertyChain;
+            PropertyInfo[] cachedInfo;
+            internal PropertyBinder(string propertyChain)
             {
-                this.EntityName = entityName;
-                this.ClassName = className;
-                propertyMapping = new Dictionary<string, string>();
+                this.propertyChain = propertyChain;
             }
-            public string EntityName { get; set; }
-            public string ClassName { get; set; }
-            Dictionary<string, string> propertyMapping;
-            public Dictionary<string, string> PropertyMapping 
+
+            IComparable initializeCache(object obj){
+                string[] properties = propertyChain.Split('.');
+
+                cachedInfo = new PropertyInfo[properties.Length];
+                PropertyInfo propertyInfo = null;
+                for (int i = 0; i < cachedInfo.Length; i++)
+                {
+                    propertyInfo = obj.GetType().GetProperty(properties[i], (BindingFlags.Public | BindingFlags.Instance));
+                    cachedInfo[i] = propertyInfo;
+                    obj = propertyInfo.GetValue(obj, null);
+                }
+                return (IComparable)obj;
+
+            }
+
+            internal IComparable Bind(object obj)
             {
-                get { return propertyMapping; }
+                if (propertyChain == null || propertyChain.Equals(""))
+                {
+                    return (IComparable)obj;
+                }
+
+                if (cachedInfo == null)
+                {
+                    return (IComparable)initializeCache(obj);
+                }
+                else
+                {
+                    foreach (PropertyInfo info in cachedInfo)
+                    {
+                        obj = info.GetValue(obj, null);
+                    }
+                    return (IComparable)obj;
+                }
             }
-            public void AddProperty(string entityProperty, string classProperty)
-            {
-                propertyMapping.Add(entityProperty, classProperty);
-            }
+
         }
+
 
         class QuickAndDirtyBinder:ObjectBinder
         {
             ValidationData data;
-            Dictionary<string, Entity2ClassMapping> classMapping;
-
-            private static void IndexValidationConvertionItems(Dictionary<string, Entity2ClassMapping> classMapping, ValidationConvertionItem item)
-            {
-                string entityName = item.convertionItemName;
-                string className = item.convertTo;
-                Entity2ClassMapping mapping = new Entity2ClassMapping(entityName, className);
-                foreach (ValidationConvertionItem property in item.convertionItems)
-                {
-                    mapping.AddProperty(property.convertionItemName, property.convertTo);
-                }
-                classMapping.Add(entityName, mapping);
-
-            }
+            Dictionary<string, Dictionary<Type, PropertyBinder>> propertyBindingTable;
 
 
             public QuickAndDirtyBinder(ValidationData data)
             {
                 this.data = data;
-                classMapping = new Dictionary<string, Entity2ClassMapping>();
-                IndexValidationConvertionItems(classMapping, data.convertionItem);
-                
-
+                propertyBindingTable = new Dictionary<string, Dictionary<Type, PropertyBinder>>();
             }
  
             public IComparable Bind(string tableKey, string propertyPath)
             {
-                return Bind(new ObjectSelection(tableKey, propertyPath));
+                return Bind(new PropertySelection(tableKey, propertyPath));
             }
 
-            public IComparable Bind(ObjectSelection selection)
+            private PropertyBinder getPropertyBinder(string propertyChain, string contextKey, object obj)
             {
-                Entity2ClassMapping mapping =  classMapping[selection.EntityName];
-                string className = mapping.ClassName;
-                string classProperty =null;
-                if (selection.PropertyName != null)
+                Dictionary<Type, PropertyBinder> typeBibings =null;
+                if (propertyBindingTable.ContainsKey(propertyChain))
                 {
-                    classProperty = mapping.PropertyMapping[selection.PropertyName];
-                }
-                object obj = data.Contexts.Get(selection.ContextKey);
-                if (obj.GetType().ToString().Equals(className))
+                    typeBibings = propertyBindingTable[propertyChain];
+                } else 
                 {
-                    if (classProperty == null)
-                        return (IComparable)obj;
-                    else
-                        return (IComparable)ExtractObject(classProperty, obj);
-                }
-                else
-                {
-                    throw new Exception("unable to bind object - object type does not match mapping specification");
+                    typeBibings =new Dictionary<Type, PropertyBinder>();
+                    propertyBindingTable[propertyChain] = typeBibings;
                 }
 
+                PropertyBinder binder = null;
+                if (typeBibings.ContainsKey(obj.GetType()))
+                {
+                    binder = typeBibings[obj.GetType()];
+                } else 
+                {
+                    binder = new PropertyBinder(propertyChain);
+                    typeBibings[obj.GetType()] = binder;
+                }
+                return binder;
+            }
+
+            public IComparable Bind(PropertySelection selection)
+            {
+
+                string runtimeBinding = null;
+                string propertyChain = null;
+
+                try
+                {
+                    runtimeBinding = data.BindingContainer.ContextBinding[selection.ContextKey.ToLower()];
+                }
+                catch (KeyNotFoundException e)
+                {
+                    throw new Exception("no runtime binding mapping for: " + selection.ContextKey,e);
+                }
+
+                try
+                {
+                    propertyChain = data.BindingContainer.ReferenceBinding[selection.ReferenceMeaning.ToLower()];
+                }
+                catch (KeyNotFoundException e)
+                {
+                    throw new Exception("no property chain binding mapping for: " + selection.ReferenceMeaning,e);
+                }
+                
+
+                object obj = data.Contexts.Get(runtimeBinding);
+                PropertyBinder binder = getPropertyBinder(propertyChain, runtimeBinding, obj);
+
+
+                return binder.Bind(obj);
             }
 
             private static Object ExtractObject(string property, Object obj)

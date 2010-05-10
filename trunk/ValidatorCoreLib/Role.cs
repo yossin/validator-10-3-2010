@@ -59,15 +59,15 @@ namespace ValidatorCoreLib
                 comparableToCheck = binder.Bind(key, PropertiesPath);
             }catch (Exception e)
             {
-                result.AddErrorEvent(new UnableToBindEvent(e, this, new ObjectSelection(key,PropertiesPath),1));
+                result.AddErrorEvent(new UnableToBindEvent(e, this, new PropertySelection(key,PropertiesPath),1));
                 return false;
             }
 
             
-            if (ComparedObject.GetType().Equals(typeof(ObjectSelection)))
+            if (ComparedObject.GetType().Equals(typeof(PropertySelection)))
             {
                 // bind 2nd object
-                ObjectSelection selected = (ObjectSelection)ComparedObject;
+                PropertySelection selected = (PropertySelection)ComparedObject;
                 try
                 {
                     comparableComaredObject = binder.Bind(selected);

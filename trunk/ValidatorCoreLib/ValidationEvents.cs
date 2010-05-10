@@ -40,16 +40,16 @@ namespace ValidatorCoreLib
         public class UnableToBindEvent : RuleValidationEvent, ValidationRuntimeErrorEvent
         {
             Exception linkedException;
-            ObjectSelection selection = null;
+            PropertySelection selection = null;
             int argument;
-            public UnableToBindEvent(Exception linkedException, ValidationRule rule, ObjectSelection selection, int argument) :
+            public UnableToBindEvent(Exception linkedException, ValidationRule rule, PropertySelection selection, int argument) :
                 base("unable to bind object " + selection, rule)
             {
                 this.selection = selection;
                 this.argument = argument;
                 this.linkedException = linkedException;
             }
-            public ObjectSelection Selection { get { return selection; } }
+            public PropertySelection Selection { get { return selection; } }
             public int Argument { get { return argument; } }
             public Exception LinkedException { get { return linkedException; } }
         }
