@@ -18,15 +18,17 @@ namespace ValidatorCoreLib
     [Serializable(), XmlRoot("ValidationRule", Namespace = "ValidatorCoreLib", IsNullable = false)]
     public class ValidationRule : ValidationProcess
     {
+        public string RuleName { get; set; }
+
+        public PropertySelection Property { get; set; }
+        public PropertySelection ComparedObject { get; set; }
+
         [System.Xml.Serialization.XmlIgnoreAttribute]
         public IOperator Operator { get; set; }
 
         public string OperatorName { get; set; }
 
-        public string PropertiesPath { get; set; }
-        public string key { get; set; }
-        public Object ComparedObject { get; set; }
-        public int id { get; set; }
+     //   public int id { get; set; }
 
         // conflict resolve 
         public ValidationResolve validationResolve{ get; set; }         
@@ -37,13 +39,12 @@ namespace ValidatorCoreLib
             this.Operator = OperatorHelper.GetOperator(this.OperatorName);
         }
 
-        public ValidationRule(int nRuleID, string contextContain, string key, Object comparedObject, IOperator op, bool AutoResolve, string ResolveStringForUI)
+        public ValidationRule(string RuleName, PropertySelection property, PropertySelection comparedObject, IOperator op, bool AutoResolve, string ResolveStringForUI)
         {
-            this.id = nRuleID;
+            this.RuleName = RuleName;
             this.Operator = op;
             this.OperatorName = op.GetType().ToString();
-            this.PropertiesPath = contextContain;
-            this.key = key;            
+            this.Property = property;
             this.ComparedObject = comparedObject;
             validationResolve = new ValidationResolve(AutoResolve, ResolveStringForUI);
         }
@@ -56,10 +57,10 @@ namespace ValidatorCoreLib
             IComparable comparableToCheck = null;
             // bind 1st object
             try {
-                comparableToCheck = binder.Bind(key, PropertiesPath);
+                comparableToCheck = binder.Bind(Property);
             }catch (Exception e)
             {
-                result.AddErrorEvent(new UnableToBindEvent(e, this, new PropertySelection(key,PropertiesPath),1));
+                result.AddErrorEvent(new UnableToBindEvent(e, this, Property, 1));
                 return false;
             }
 
@@ -112,10 +113,10 @@ namespace ValidatorCoreLib
             }
         }
 
-        public override string ToString()
+        /*public override string ToString()
         {
-            return "Rule: id="+this.id+", ContextKey="+this.key+", PropertiesPath="+this.PropertiesPath;
-        }
+            return "Rule: ContextKey="+this.key+", PropertiesPath="+this.PropertiesPath;
+        }*/
 
     }
 }
