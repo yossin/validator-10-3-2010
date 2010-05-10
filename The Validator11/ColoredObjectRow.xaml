@@ -4,7 +4,10 @@
     Height="19" Width="Auto">
     <Grid Height="Auto" >
         <WrapPanel Margin="0,0"  >
-            <TextBlock Name="Text_" Padding="4,4" Height="21" Width="130" Text="Value" Background="AntiqueWhite" >            </TextBlock>
+            <Button Name="ColoredObjectRowRemoveRow" FontSize="14" Height="12" Width="11" Padding="-4,-8" Margin="0,2,0,0" Click="onColoredObjectRowRemoveRow">
+                <Image Source="minus.jpeg"></Image>
+            </Button>
+            <TextBlock Name="Text_" Padding="1,4" Height="21" Width="119" Text="Value">  </TextBlock>
         </WrapPanel>
     </Grid>
 </UserControl>

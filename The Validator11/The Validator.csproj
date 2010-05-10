@@ -86,14 +86,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ColoredObjectRow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ColoredObjectRow_AddNew.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ResolveObjectRow_AddNew.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -134,12 +126,6 @@
     <Compile Include="ConvertionGridData.cs" />
     <Compile Include="ConvertionClassItem.xaml.cs">
       <DependentUpon>ConvertionClassItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ColoredObjectRow.xaml.cs">
-      <DependentUpon>ColoredObjectRow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ColoredObjectRow_AddNew.xaml.cs">
-      <DependentUpon>ColoredObjectRow_AddNew.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResolveObjectRow_AddNew.xaml.cs">
       <DependentUpon>ResolveObjectRow_AddNew.xaml</DependentUpon>
