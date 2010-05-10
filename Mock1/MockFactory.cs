@@ -4,7 +4,14 @@ using System.Linq;
 using System.Text;
 using ValidatorCoreLib;
 using ValidatorSDK;
-using ValidatorCoreLib;
+
+
+
+
+
+
+
+
 
 namespace Mock1Test
 {
@@ -25,9 +32,9 @@ namespace Mock1Test
             person3.Age = 40;
             person3.Name = "Person3";
             ContextTable table = new ContextTable();
-            table.Add("person1", person1);
-            table.Add("person2", person2);
-            table.Add("person3", person3);
+            table.Add("Person1", person1);
+            table.Add("Person2", person2);
+            table.Add("Person3", person3);
             return table;
         }
 
@@ -38,29 +45,40 @@ namespace Mock1Test
             ValidationFlow flow11 = new ValidationFlow("person_validations", true);
             flow1.Add(flow11);
 
-            ValidationRule role111 = new ValidationRule(1, "PersonName", "person1", "Person", new EqualOperator(), true, "resolve string for ui");
+            ValidationRule role111 = new ValidationRule(1, "Person's Name", "person1", "Person", new EqualOperator(), true, "resolve string for ui");
             flow11.Add(role111);
 
-            ValidationRule role112 = new ValidationRule(2, "person", "person1", new ObjectSelection("person2","person"), new EqualOperator(), true, "resolve string for ui");
+            ValidationRule role112 = new ValidationRule(2, "Person", "person1", new PropertySelection("person2", "Person"), new EqualOperator(), true, "resolve string for ui");
             flow11.Add(role112);
 
             ValidationFlow flow12 = new ValidationFlow("person_age_validations", true);
             flow1.Add(flow12);
 
-            ValidationRule role121 = new ValidationRule(1, "person.age", "person3", 30, new EqualOperator(), true, "age must be 30");
+            ValidationRule role121 = new ValidationRule(1, "Person's Age", "person3", 30, new EqualOperator(), true, "age must be 30");
             flow12.Add(role121);
             
             return flow1;
         }
 
-        private ValidationConvertionItem CreateValidationConvertionItem()
+        private BindingContainer CreateBindingContainer()
         {
-            ValidationConvertionItem item = new ValidationConvertionItem("person", "Mock1Test.MyPerson");
-            item.Add(new ValidationConvertionItem("name","Name"));
-            item.Add(new ValidationConvertionItem("age", "Age"));
-            
 
-            return item;
+            //definitionKey, string runtimeKey
+            Dictionary<string, string> contextBinding = new Dictionary<string, string>();
+
+            contextBinding["person1".ToLower()] = "Person1";
+            contextBinding["person2".ToLower()] = "Person2";
+            contextBinding["person3".ToLower()] = "Person3";
+
+
+            //referenceKey, string propertyChain
+            Dictionary<string, string> referenceBinding = new Dictionary<string, string>();
+            referenceBinding["Person's Name".ToLower()] = "Name";
+            referenceBinding["Person's Age".ToLower()] = "Age";
+            referenceBinding["Person".ToLower()] = "";
+
+            BindingContainer container = new BindingContainer(contextBinding, referenceBinding);
+            return container;
         }
 
         public ValidationData CreateValidationData()
@@ -69,9 +87,9 @@ namespace Mock1Test
             
             ContextTable table = CreateContextTable();
             ValidationFlow flow = CreateValidationFlow();
-            ValidationConvertionItem item=CreateValidationConvertionItem();
+            BindingContainer binding=CreateBindingContainer();
 
-            ValidationData data = new ValidationData(table, flow, item);
+            ValidationData data = new ValidationData(table, flow, binding);
 
             return data;
 

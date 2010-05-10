@@ -9,13 +9,24 @@ namespace Mock1Test
 {
     class Program
     {
-        static void Main(string[] args)
-        {
 
+        static void run()
+        {
             MockFactory factory = new MockFactory();
             ValidationData data = factory.CreateValidationData();
             ValidationResult result = Validator.Validate(data);
             Console.Write(result);
+        }
+
+        static void test1()
+        {
+
+        }
+
+        static void Main(string[] args)
+        {
+
+            run();
             
         }
 
