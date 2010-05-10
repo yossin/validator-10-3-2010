@@ -21,8 +21,9 @@ namespace The_Validator11
     /// </summary>
     public partial class ColoredObjectRow : UserControl
     {
-        RuleRow parentRuleRow;
-        public ColoredObjectRow(string sText, Color colorC)
+        private TreeViewItem root_convertionClassItem;
+        
+        public ColoredObjectRow(string sText, Color colorC, TreeViewItem root_convertionClassItem)
         {
             InitializeComponent();
             SolidColorBrush scb = new SolidColorBrush();
@@ -32,6 +33,29 @@ namespace The_Validator11
             this.Text_.Background = scb;
             this.Text_.Foreground = scb2;
             this.Text_.Text = sText;
+
+            this.root_convertionClassItem = root_convertionClassItem;
+        }
+
+        private void onColoredObjectRowRemoveRow(object sender, RoutedEventArgs e)
+        {
+            RemoveItemFromConvertionPathItems(root_convertionClassItem);
+                
+        }
+
+        private void RemoveItemFromConvertionPathItems(TreeViewItem tvi)
+        {
+            ConvertionClassItem cci = (ConvertionClassItem)(tvi.Header);
+
+            ComboBoxItem cbiNew = new ComboBoxItem();
+            ColoredObjectRow cor = new ColoredObjectRow("", ConvertionClassItem.GetColorFromType(ConvertionPathItemsContainer.ConvertionCompareItemType.NotFromFlow), tvi);
+            cbiNew.Content = cor;
+            cci.convertToCombo.Items.Insert(cci.convertToCombo.Items.Count - 1, cbiNew);
+
+            foreach (TreeViewItem tvi_ in tvi.Items)
+            {
+           //     AddNewItemToConvertionPathItems(sValue, tvi_);
+            }
         }
     }
 }

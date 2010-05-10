@@ -24,36 +24,37 @@ namespace The_Validator11
         private TreeViewItem tvItemParent;
         private TreeViewItem root_convertionClassItem;
         
-        public ColoredObjectRow_AddNew(TreeViewItem tvItemParent, TreeViewItem root_convertionClassItem)
+        public ColoredObjectRow_AddNew(/*TreeViewItem tvItemParent, TreeViewItem root_convertionClassItem*/)
         {
             InitializeComponent();
             this.tvItemParent = tvItemParent;
             this.root_convertionClassItem = root_convertionClassItem;
         }
 
+        /* <TextBlock Name="convertPath" Text="Path:" Width="25" Padding="0,5" Margin="3,0"></TextBlock>    
         private void TextFocusLost(object sender, RoutedEventArgs e)
         {
             if (!ColoredObjectRow_NewValueTextBox.Text.Equals(@"New"))
             {
-                AddNewItemToConvertionItems(ColoredObjectRow_NewValueTextBox.Text, root_convertionClassItem);
+                AddNewItemToConvertionPathItems(ColoredObjectRow_NewValueTextBox.Text, root_convertionClassItem);
                 ((ConvertionClassItem)(tvItemParent.Header)).convertToCombo.SelectedIndex = (((ConvertionClassItem)(tvItemParent.Header)).convertToCombo).Items.Count - 2;
                 ColoredObjectRow_NewValueTextBox.Text = @"New";
             }
         }
 
-        private void AddNewItemToConvertionItems(string sValue, TreeViewItem tvi)
+        private void AddNewItemToConvertionPathItems(string sValue, TreeViewItem tvi)
         {
             ConvertionClassItem cci = (ConvertionClassItem)(tvi.Header);
 
             ComboBoxItem cbiNew = new ComboBoxItem();
-            ColoredObjectRow cor = new ColoredObjectRow(sValue, ConvertionClassItem.GetColorFromType(ConvertionCompareItemsContainer.ConvertionCompareItemType.NotFromFlow));
+            ColoredObjectRow cor = new ColoredObjectRow(sValue, ConvertionClassItem.GetColorFromType(ConvertionPathItemsContainer.ConvertionCompareItemType.NotFromFlow), tvi);
             cbiNew.Content = cor;
             cci.convertToCombo.Items.Insert(cci.convertToCombo.Items.Count - 1, cbiNew);
 
             foreach (TreeViewItem tvi_ in tvi.Items)
             {
-                AddNewItemToConvertionItems(sValue, tvi_);
+                AddNewItemToConvertionPathItems(sValue, tvi_);
             }
-        }
+        }*/
     }
 }

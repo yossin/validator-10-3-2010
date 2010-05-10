@@ -28,11 +28,12 @@ namespace The_Validator11
             InitializeComponent();
             SetComboValues();
 
-            ProperyKey.Text = rule.id.ToString();
-            ProperyPath.Text = rule.key;
+            ProperyName.Text = rule.Property.ContextKey;
+            ProperyPath.Text = rule.Property.ReferenceMeaning;
+            
             setOperatorComboValue(rule.Operator);
-            ObjectValue.Text = rule.ComparedObject.ToString();
-            setTypeComboValue(rule.PropertiesPath);
+ 
+            setTypeComboValue(rule.ComparedObject);
 
             ResolveCheck.IsChecked = rule.validationResolve.AutoResolve;
             if (!rule.validationResolve.AutoResolve)
@@ -55,14 +56,38 @@ namespace The_Validator11
             cbiNew.Content = rorNew;
             ResolveValues.Items.Add(cbiNew);
 
-            if (rule.validationResolve.ResolveObjectSelected >= 0 && rule.validationResolve.ResolveObjectSelected < ResolveValues.Items.Count )
-                ResolveValues.SelectedIndex = rule.validationResolve.ResolveObjectSelected ;
-            else 
-                ResolveValues.SelectedIndex = ResolveValues.Items.Count - 1 ;
+            if (rule.validationResolve.ResolveObjectSelected >= 0 && rule.validationResolve.ResolveObjectSelected < ResolveValues.Items.Count)
+                ResolveValues.SelectedIndex = rule.validationResolve.ResolveObjectSelected;
+            else
+                ResolveValues.SelectedIndex = ResolveValues.Items.Count - 1;
 
             this.ParentWrapPanel = ParentWrapPanel;
         }
-    
+
+        public ValidatorCoreLib.ValidationRule GetValidationRule()
+        {
+            string resolveMsg = @"";
+            if (ResolveCheck.IsChecked != true) resolveMsg = ResolveMsg.Text;
+
+            ValidatorCoreLib.ValidationRule vr = new ValidatorCoreLib.ValidationRule(RuleName.Text, new PropertySelection(ProperyName.Text, ProperyPath.Text), getTypeFromCombo(),
+                getOperatorFromCombo(), ResolveCheck.IsChecked == true, resolveMsg);
+
+            foreach (Object resolveItem in ResolveValues.Items)
+            {
+                Object realResolveItem = resolveItem;
+                while (realResolveItem.GetType().Equals(typeof(ComboBoxItem)))
+                    realResolveItem = ((Object)(((ComboBoxItem)realResolveItem).Content));
+
+                if (realResolveItem.GetType().Equals(typeof(ResolveObjectRow)))
+                {
+                    vr.validationResolve.ResolveObjects.Add(((ResolveObjectRow)realResolveItem).ResolveValue.Text);
+                }
+            }
+
+            vr.validationResolve.ResolveObjectSelected = ResolveValues.SelectedIndex;
+
+            return vr;
+        }
         public void AddResoveObject()
         {
             ResolveObjectRow ror = new ResolveObjectRow(this, @"New Resolve");
@@ -100,24 +125,41 @@ namespace The_Validator11
             return new EqualOperator();
         }
 
-        private void setTypeComboValue(string str)
+        private void setTypeComboValue(PropertySelection comparedObject)
         {
-            if (str.ToLower().Contains("int")) ObjectType.SelectedIndex = 0;
-            if (str.ToLower().Contains("string")) ObjectType.SelectedIndex = 1;
-            if (str.ToLower().Contains("float")) ObjectType.SelectedIndex = 2;
-            if (str.ToLower().Contains("object")) ObjectType.SelectedIndex = 3;
+            if (comparedObject.ReferenceMeaning.ToLower().Contains("system.int32"))ObjectType.SelectedIndex = 0;
+            else if (comparedObject.ReferenceMeaning.ToLower().Contains("system.string"))ObjectType.SelectedIndex = 1;
+            else if (comparedObject.ReferenceMeaning.ToLower().Contains("system.single"))ObjectType.SelectedIndex = 2;
+            else // object
+            {
+                ObjectType.SelectedIndex = 3;
+                setObjectGUI(true);
+
+                CompareToPath.Text = comparedObject.ReferenceMeaning;
+            }
+
+            CompareTo.Text = comparedObject.ContextKey;
         }
 
-        private string getTypeFromCombo()
+        private void setObjectGUI(bool bObject)
         {
-            switch (ObjectType.SelectedIndex)
+            label_Path_.Visibility = bObject ? Visibility.Visible : Visibility.Hidden;
+            CompareToPath.Visibility = bObject ? Visibility.Visible : Visibility.Hidden;
+            label_key_.Text = bObject ? @"Name:" : @"Value:";
+        }
+
+        private PropertySelection getTypeFromCombo()
+        {
+            if ( ObjectType.SelectedIndex < 3 )
             {
-                case 0: return "System.Int32";
-                case 1: return "System.String";
-                case 2: return "System.Single";     // Float
-                case 3: return "Object";
+                switch (ObjectType.SelectedIndex)
+                {
+                    case 0: return new PropertySelection(CompareTo.Text, @"System.Int32");
+                    case 1: return new PropertySelection(CompareTo.Text, @"System.String");
+                    case 2: return new PropertySelection(CompareTo.Text, @"System.Single");     // Float
+                }
             }
-            return "System.Int32";
+            return new PropertySelection(CompareTo.Text, CompareToPath.Text);     // object
         }
 
         private void SetComboValues()
@@ -134,33 +176,7 @@ namespace The_Validator11
             ObjectType.Items.Add("Float");
             ObjectType.Items.Add("Object");
         }
-
-        public ValidatorCoreLib.ValidationRule GetValidationRule()
-        {
-            string resolveMsg = @"";
-            if (ResolveCheck.IsChecked != true) resolveMsg = ResolveMsg.Text;
-
-            ValidatorCoreLib.ValidationRule vr = new ValidatorCoreLib.ValidationRule(Convert.ToInt32(ProperyKey.Text), getTypeFromCombo(),
-                ProperyPath.Text, ObjectValue.Text, getOperatorFromCombo(),
-                ResolveCheck.IsChecked == true, resolveMsg);
-
-            foreach (Object resolveItem in ResolveValues.Items)
-            {
-                Object realResolveItem = resolveItem;
-                while (realResolveItem.GetType().Equals(typeof(ComboBoxItem)))
-                    realResolveItem = ((Object)(((ComboBoxItem)realResolveItem).Content));
-
-                if (realResolveItem.GetType().Equals(typeof(ResolveObjectRow)))
-                {
-                    vr.validationResolve.ResolveObjects.Add(((ResolveObjectRow)realResolveItem).ResolveValue.Text);
-                }
-            }
-
-            vr.validationResolve.ResolveObjectSelected = ResolveValues.SelectedIndex;
-
-            return vr;                 
-        }
-
+        
         private void OnX_Click(object sender, RoutedEventArgs e)
         {
             foreach (UIElement child in ParentWrapPanel.Children)
@@ -186,6 +202,11 @@ namespace The_Validator11
                 AddResoveObject();
                 ResolveValues.SelectedIndex = ResolveValues.Items.Count - 2;
             }
+        }
+
+        private void onObjectTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            setObjectGUI(ObjectType.SelectedIndex > 2);
         }        
     }
 }
