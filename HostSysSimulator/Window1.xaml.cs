@@ -27,8 +27,8 @@ namespace HostSysSim
     ///         
     public partial class Window1 : Window
     {
-        public const string sLoadFolder = @"c:\";
-        public const string sFileHostSysSimData             = @"c:\HostSysSimData.xml";
+        public const string sLoadFolder = @"C:\validationFiles\";
+        public const string sFileHostSysSimData = @"C:\validationFiles\HostSysSimData.xml";
         HostSysSimData hssd = new HostSysSimData();
  
         ValidationData validationData = new ValidationData();
@@ -117,7 +117,7 @@ namespace HostSysSim
             hssd.ClearPropRowData();
             GetHostSysSimDataFromTree(Prop_TreeViewItem);
             hssd.GetValidationData(validationData);
-            if (LoadFlow() && LoadConvertionComparedItems() && LoadConvertion())  // Load validation data
+            if (LoadFlow() && LoadBindingContainer())  // Load validation data
             {
                 ValidatorCoreLib.ValidationResult result = Validator.Validate(validationData);
                 // todo: proceed later
@@ -137,26 +137,16 @@ namespace HostSysSim
             return true ;
         }
 
-        private bool LoadConvertion()
+        private bool LoadBindingContainer()
         {
-            if ( !validationData.LoadValidationConvertionItems(sLoadFolder) )
+            if ( !validationData.LoadBindingContainer(sLoadFolder) )
             {
-                string sMsg = ValidatorSDK.ValidationData.sFileConvertion + @" doesn't exist";
+                string sMsg = ValidatorSDK.ValidationData.sFileConvertionBindingContainer + @" doesn't exist";
                 MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
                 return true;
             }
             return true ;
         }
 
-        private bool LoadConvertionComparedItems()
-        {
-            if ( ! validationData.LoadConvertionComparedItems(sLoadFolder) )
-            {
-                string sMsg = ValidatorSDK.ValidationData.sFileConvertionComparedItems + @" doesn't exist";
-                MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
-                return true;
-            }
-            return true ;
-        }
     }
 }
