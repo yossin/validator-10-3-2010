@@ -14,31 +14,28 @@ namespace ValidatorSDK
     {
         public ContextTable Contexts { get; set; }
         public ValidationFlow flow { get; set; }
-        public BindingContainer BindingContainer { get; set; }
+        public BindingContainer bindingContainer { get; set; }
 
         private static int ii = 1;
 
 
         public const string sFileFlow = @"Flow1.xml";
-        public const string sFileConvertion = @"Convertion.xml";
-        public const string sFileConvertionComparedItems = @"ConvertionComparedItems.xml";
+        public const string sFileConvertionTree = @"ConvertionTree.xml";
+        public const string sFileConvertionPathItems = @"FileConvertionPathItems.xml";
+        public const string sFileConvertionBindingContainer = @"FileConvertionBindingContainer.xml";
 
-
-        //todo: fix this
         public ValidationData()
         {
             this.Contexts = new ContextTable();
             this.flow = new ValidationFlow((ii++).ToString(), true);
-            //this.BindingContainer = new ValidationConvertionItem();
+            this.bindingContainer = new BindingContainer();
         }
 
-        //todo: fix this
         public ValidationData(ContextTable contexts, ValidationFlow flow, BindingContainer binding)
         {
             this.Contexts = contexts;
             this.flow = flow;
-            this.BindingContainer = binding;
-            //convertionComparedItems = new ConvertionComparedItems();
+            this.bindingContainer = binding;
         }
 
         public void Add(string key, Object obj)
@@ -56,22 +53,11 @@ namespace ValidatorSDK
             flow.Add(rule);
         }
 
-       
-        //todo: fix this
         public void Clear()
         {
             Contexts.Clear();
             flow.Clear();
-            //BindingContainer.Clear();
-            //convertionComparedItems.Clear();
-
-        }
-
-        public bool LoadValidationData(string sFolder, bool bLoadContexTable)
-        {
-            if (bLoadContexTable && !LoadContexTable(sFolder))
-                return false ;
-            return LoadValidationFlow(sFolder) && LoadValidationConvertionItems(sFolder) && LoadConvertionComparedItems(sFolder);
+            bindingContainer.Clear();
         }
 
         public bool LoadContexTable(string sFolder)
@@ -100,46 +86,62 @@ namespace ValidatorSDK
             w2.Close();
         }
 
-        public bool LoadValidationConvertionItems(string sFolder)
+        static public ConvertionTree LoadConvertionTree(string sFolder)
         {
             string sFile = sFolder;
-            sFile += sFileConvertion;
+            sFile += sFileConvertionTree;
             if (!File.Exists(sFile))
-                return false;
+                return null;
 
-            LoadConvertionData(sFile);
-
-            return true;
+            return LoadConvertionTreeData(sFile);
         }
-        private void LoadConvertionData(string sFile)
+        static private ConvertionTree LoadConvertionTreeData(string sFile)
         {
             // deSerialize
             TextReader w2 = new StreamReader(sFile);
-            XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ValidationConvertionItem));
-            //todo: fix this
-            //BindingContainer = (ValidatorCoreLib.ValidationConvertionItem)s2.Deserialize(w2);
+            XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionTree));
+            ConvertionTree ct = (ValidatorCoreLib.ConvertionTree)s2.Deserialize(w2);
             w2.Close();
+            return ct;
         }
 
-        public bool LoadConvertionComparedItems(string sFolder)
+        public bool LoadBindingContainer(string sFolder)
         {
             string sFile = sFolder;
-            sFile += sFileConvertionComparedItems;
+            sFile += sFileConvertionBindingContainer;
             if (!File.Exists(sFile))
                 return false;
 
-            LoadConvertionComparedItemsData(sFile);
-
+            LoadBindingContainerData(sFile);
+        
             return true;
         }
-        private void LoadConvertionComparedItemsData(string sFile)
+        private void LoadBindingContainerData(string sFile)
         {
             // deSerialize
             TextReader w2 = new StreamReader(sFile);
-            XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionComparedItems));
-            //todo: fix this
-//            convertionComparedItems = (ValidatorCoreLib.ConvertionComparedItems)s2.Deserialize(w2);
+            XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.BindingContainer));
+            bindingContainer = (ValidatorCoreLib.BindingContainer)s2.Deserialize(w2);
             w2.Close();
+        }
+
+        static public ConvertionPathItems LoadConvertionPathItems(string sFolder)
+        {
+            string sFile = sFolder;
+            sFile += sFileConvertionPathItems;
+            if (!File.Exists(sFile))
+                return null;
+
+            return LoadConvertionPathItemsData(sFile);
+        }
+        static private ConvertionPathItems LoadConvertionPathItemsData(string sFile)
+        {
+            // deSerialize
+            TextReader w2 = new StreamReader(sFile);
+            XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionPathItems));
+            ConvertionPathItems cpi = (ValidatorCoreLib.ConvertionPathItems)s2.Deserialize(w2);
+            w2.Close();
+            return cpi;
         }
 
 
@@ -155,28 +157,39 @@ namespace ValidatorSDK
             w.Close();
         }
 
-        public void SaveConvertionData(string sFolder)
+        static public void SaveConvertionTreeData(string sFolder, ConvertionTree ct)
         {
             string sFile = sFolder;
-            sFile += sFileConvertion;
+            sFile += sFileConvertionTree;
 
             // Serialize
             TextWriter w = new StreamWriter(sFile);
-            XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ValidationConvertionItem));
-            s.Serialize(w, BindingContainer);
+            XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionTree));
+            s.Serialize(w, ct);
             w.Close();
         }
 
-        public void SaveConvertionComparedItemsData(string sFolder)
+        public void SaveBindingContainerData(string sFolder)
         {
             string sFile = sFolder;
-            sFile += sFileConvertionComparedItems;
+            sFile += sFileConvertionBindingContainer;
 
             // Serialize
             TextWriter w = new StreamWriter(sFile);
-            XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionComparedItems));
-            //todo: fix this
-//            s.Serialize(w, convertionComparedItems);
+            XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.BindingContainer));
+            s.Serialize(w, bindingContainer);
+            w.Close();
+        }
+
+        static public void SaveConvertionConvertionPathItemsData(string sFolder, ConvertionPathItems cpi)
+        {
+            string sFile = sFolder;
+            sFile += sFileConvertionPathItems;
+
+            // Serialize
+            TextWriter w = new StreamWriter(sFile);
+            XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionPathItems));
+            s.Serialize(w, cpi);
             w.Close();
         }
 
