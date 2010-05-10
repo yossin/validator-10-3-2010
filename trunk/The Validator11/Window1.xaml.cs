@@ -87,7 +87,7 @@ namespace The_Validator11
 
             if ( validationData.LoadValidationConvertionItems(sLoadFolder) )
             {
-                AddConvertion(validationData.convertionItem, validationData.convertionComparedItems, Convertion_TreeViewItem);
+                AddConvertion(validationData.BindingContainer, validationData.convertionComparedItems, Convertion_TreeViewItem);
                 ((ConvertionClassItem)Convertion_TreeViewItem.Header).RemoveConvertionClassItem.IsEnabled = false;
             }
             else
@@ -117,13 +117,13 @@ namespace The_Validator11
             else
                 validationData.SaveFlowData(sLoadFolder);
 
-            if (!GetValidationConvertionItemFromTree(validationData.convertionItem, Convertion_TreeViewItem))
-                validationData.convertionItem = null;
+            if (!GetValidationConvertionItemFromTree(validationData.BindingContainer, Convertion_TreeViewItem))
+                validationData.BindingContainer = null;
             else
                 validationData.SaveConvertionData(sLoadFolder);
 
             if (!GetConvertionComparedItems(validationData.convertionComparedItems))
-                validationData.convertionItem = null;
+                validationData.BindingContainer = null;
             else
                 validationData.SaveConvertionComparedItemsData(sLoadFolder);
         }
