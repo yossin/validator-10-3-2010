@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ValidatorCoreLib;
-using ValidatorCoreLib;
 using System.Reflection;
 
 
@@ -110,7 +109,7 @@ namespace ValidatorSDK
 
                 try
                 {
-                    runtimeBinding = data.BindingContainer.ContextBinding[selection.ContextKey.ToLower()];
+                    runtimeBinding = data.bindingContainer.ContextBinding[selection.ContextKey.ToLower()];
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -119,7 +118,7 @@ namespace ValidatorSDK
 
                 try
                 {
-                    propertyChain = data.BindingContainer.ReferenceBinding[selection.ReferenceMeaning.ToLower()];
+                    propertyChain = data.bindingContainer.ReferenceBinding[selection.ReferenceMeaning.ToLower()];
                 }
                 catch (KeyNotFoundException e)
                 {
