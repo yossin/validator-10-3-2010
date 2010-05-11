@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HostSysSimData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="ValidatorCoreLib">
+  <PropRowsData>
+    <PropRowData>
+      <Key>CUSTOM_PAPER_SIZE</Key>
+      <RadioBChecked>3</RadioBChecked>
+      <StringData>New String Data</StringData>
+      <IntData>0</IntData>
+      <FloatData>0.1</FloatData>
+      <ObjectDataComboSelected>3</ObjectDataComboSelected>
+      <ObjectDataStringData>270,310</ObjectDataStringData>
+    </PropRowData>
+    <PropRowData>
+      <Key>PAPER_SIZE_A4</Key>
+      <RadioBChecked>3</RadioBChecked>
+      <StringData>New String Data</StringData>
+      <IntData>0</IntData>
+      <FloatData>0.1</FloatData>
+      <ObjectDataComboSelected>3</ObjectDataComboSelected>
+      <ObjectDataStringData>270,310</ObjectDataStringData>
+    </PropRowData>
+  </PropRowsData>
+</HostSysSimData>

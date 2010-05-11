@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConvertionTree xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="ValidatorCoreLib">
+  <convertionItems>
+    <ConvertionTree>
+      <convertionItems>
+        <ConvertionTree>
+          <convertionItems />
+          <convertionPath>paper size height</convertionPath>
+          <convertionAttribute>y</convertionAttribute>
+        </ConvertionTree>
+        <ConvertionTree>
+          <convertionItems />
+          <convertionPath>paper size width</convertionPath>
+          <convertionAttribute>x</convertionAttribute>
+        </ConvertionTree>
+      </convertionItems>
+      <convertionPath>size of paper </convertionPath>
+      <convertionAttribute>Size</convertionAttribute>
+    </ConvertionTree>
+  </convertionItems>
+  <convertionPath>Paper</convertionPath>
+  <convertionAttribute>Paper</convertionAttribute>
+</ConvertionTree>
