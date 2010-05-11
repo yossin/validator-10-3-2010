@@ -37,15 +37,18 @@ namespace ValidatorCoreLib
         }
 
 
-
         [Serializable(), XmlRoot("DictionaryEntry_", Namespace = "ValidatorCoreLib", IsNullable = false)]
         public class DictionaryEntry_
         {
             public string Key{ get; set; }
             public string Value { get; set; }
         }
-           
-        [XmlArray("BindingContainer")]
+
+
+
+
+
+        [XmlArray("referenceBindingContainer")]
         [XmlArrayItem("referenceBinding", Type = typeof(DictionaryEntry_))]
         public DictionaryEntry_[] _x_referenceBinding  
         {  
@@ -75,7 +78,7 @@ namespace ValidatorCoreLib
          }
 
 
-        [XmlArray("BindingContainer")]
+        [XmlArray("contextBindingContainer")]
         [XmlArrayItem("contextBinding", Type = typeof(DictionaryEntry_))]
         public DictionaryEntry_[] _x_contextBinding
         {
