@@ -27,8 +27,8 @@ namespace HostSysSim
     ///         
     public partial class Window1 : Window
     {
-        public const string sLoadFolder = @"C:\validationFiles\";
-        public const string sFileHostSysSimData = @"C:\validationFiles\HostSysSimData.xml";
+        public string sLoadFolder = @"C:\validationFiles\";
+        public const string sFileHostSysSimFile = @"HostSysSimData.xml";
         HostSysSimData hssd = new HostSysSimData();
  
         ValidationData validationData = new ValidationData();
@@ -48,18 +48,35 @@ namespace HostSysSim
 
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-
-            if (File.Exists(sFileHostSysSimData))
+            if (!SetLoadFolder()) return;
+            if (File.Exists(sLoadFolder + sFileHostSysSimFile))
             {
-                LoadPropData(sFileHostSysSimData);
+                LoadPropData(sLoadFolder + sFileHostSysSimFile);
                 AddPropsToGUI(Prop_TreeViewItem);
                 AddEmptyPropTree();
             }
             else
             {
-                string sMsg = sFileHostSysSimData + @" doesn't exist";
+                string sMsg = sLoadFolder + sFileHostSysSimFile + @" doesn't exist";
                 MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK);
             }
+        }
+
+        private bool SetLoadFolder()
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            //dlg.DefaultExt = ".txt";
+            //dlg.Filter = "Text documents (.xml)|*.xml";
+            dlg.Title = "Select one of the files from your project";
+            Nullable<bool> result = dlg.ShowDialog();
+            // Get the selected file name and display in a TextBox
+            if (result != true)
+                return false;
+
+            sLoadFolder = dlg.FileName;
+            int nInd = sLoadFolder.LastIndexOf("\\");
+            sLoadFolder = sLoadFolder.Remove(nInd + 1);
+            return true;
         }
 
         private void LoadPropData(string sFile)
@@ -84,10 +101,12 @@ namespace HostSysSim
 
         private void OnSave(object sender, RoutedEventArgs e)
         {
+            if (!SetLoadFolder()) return;
+
             hssd.ClearPropRowData();
 
             GetHostSysSimDataFromTree(Prop_TreeViewItem);
-            SaveHostSysSimData(sFileHostSysSimData);
+            SaveHostSysSimData(sLoadFolder + sFileHostSysSimFile);
         }
 
         private void GetHostSysSimDataFromTree(TreeViewItem tvi)

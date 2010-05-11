@@ -44,8 +44,12 @@ namespace HostSysSim
                     case 3: 
                         if (prd.ObjectDataComboSelected==0)
                             obj = (Object)(new DummyA(prd.ObjectDataStringData));
-                        else     
+                        else if (prd.ObjectDataComboSelected == 1)    
                             obj = (Object)(new DummyB(prd.ObjectDataStringData));
+                        else if (prd.ObjectDataComboSelected == 2)
+                            obj = (Object)(new Paper(prd.ObjectDataStringData));
+                        else        // 3 
+                            obj = (Object)(new Point(prd.ObjectDataStringData));
                         break;
                     case 0: 
                     default:   

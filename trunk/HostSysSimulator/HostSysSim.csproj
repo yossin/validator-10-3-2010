@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E3FE3977-3121-4974-9EE8-61697D1BD45B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -104,6 +104,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Point.cs" />
+    <Compile Include="Paper.cs" />
     <Compile Include="HostSysSimData.cs" />
     <Compile Include="DummyA.cs" />
     <Compile Include="DummyB.cs" />
