@@ -26,7 +26,7 @@ namespace The_Validator11
     ///         
     public partial class Window1 : Window
     {
-        public const string sLoadFolder = @"C:\validationFiles\";
+        public string sLoadFolder = @"C:\validationFiles\";
  
         ValidationData validationData = new ValidationData();
         ConvertionPathItems convertionPathItems = new ConvertionPathItems();
@@ -37,6 +37,9 @@ namespace The_Validator11
             InitializeComponent();
             CreateEmpteFlowTree();
             CreateEmpteConvertionTree();
+
+            CreateEmpteNameConvertionRow();
+            
         }
 
         private void CreateEmpteFlowTree()
@@ -57,13 +60,32 @@ namespace The_Validator11
 
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-            // load flow
+            if (! SetLoadFolder()) return ;
+
             LoadFlow();
 
             //LoadConvertionPathItems();
             //UpdateConvertionPathItemsFromFlow();
-            
+
             LoadConvertionTree();
+            LoadNameConvertion();
+        }
+
+        private bool SetLoadFolder()
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            //dlg.DefaultExt = ".txt";
+            //dlg.Filter = "Text documents (.xml)|*.xml";
+            dlg.Title = "Select one of the files from your project";
+            Nullable<bool> result = dlg.ShowDialog();
+            // Get the selected file name and display in a TextBox
+            if (result != true)
+                return false;
+            
+            sLoadFolder = dlg.FileName;
+            int nInd = sLoadFolder.LastIndexOf("\\");
+            sLoadFolder = sLoadFolder.Remove(nInd+1);
+            return true;
         }
 
         private void LoadFlow()
@@ -99,6 +121,21 @@ namespace The_Validator11
             }
         }
 
+        private void LoadNameConvertion()
+        {
+            validationData.bindingContainer.Clear();
+
+            if (validationData.LoadBindingContainer(sLoadFolder))
+            {
+                SetNameConvertionTable();
+            }
+            else
+            {
+                string sMsg = ValidatorSDK.ValidationData.sFileConvertionBindingContainer + @" doesn't exist";
+                MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
+            }
+        }
+
         /*private void LoadConvertionPathItems()
         {
             convertionPathItems.Clear();
@@ -113,6 +150,8 @@ namespace The_Validator11
 
         private void OnSave(object sender, RoutedEventArgs e)
         {
+            SetLoadFolder();
+
             validationData.Clear();
 
             if (!GetValidationFlowFromTree(validationData.flow, Flow_TreeViewItem))
@@ -127,8 +166,7 @@ namespace The_Validator11
             {
                 ValidationData.SaveConvertionTreeData(sLoadFolder, convertionTreeItem);
                 validationData.bindingContainer = CreateBindingContainer();
-                // To do - serelize not working for dictionary
-              //  validationData.SaveBindingContainerData(sLoadFolder);
+                validationData.SaveBindingContainerData(sLoadFolder);
             }
             
             
@@ -295,8 +333,7 @@ namespace The_Validator11
             Dictionary<string, string> contextBinding = new Dictionary<string, string>();
 
             CreateBindingContainerRec(convertionTreeItem, "", referenceBinding);
-
-            // TBD - get contextBinding
+            GetNameConvertionData(contextBinding);
 
             return new BindingContainer(contextBinding, referenceBinding);
         }
@@ -315,5 +352,50 @@ namespace The_Validator11
                 CreateBindingContainerRec(chiled_convertionTree, sNewKey, referenceBinding);
             }
         }
+
+           
+        private void CreateEmpteNameConvertionRow()
+        {
+        }
+    
+        public class NameConvertionData
+        {
+            public NameConvertionData(string DesignerName, string ContextName) { this.DesignerName = DesignerName; this.ContextName = ContextName; }
+            public string DesignerName { get; set; }
+            public string ContextName { get; set; }
+        }
+
+        public void GetNameConvertionData(Dictionary<string, string> contextBinding)
+        {
+            validationData.bindingContainer.ContextBinding.Clear();
+            foreach (NameConvertionData ncd in NameConvertionItems.Items)
+            {
+                if ( ! ncd.DesignerName.Equals("") && ! contextBinding.ContainsKey(ncd.DesignerName) )
+                    contextBinding.Add(ncd.DesignerName, ncd.ContextName);
+            }
+        }
+
+        private void OnNameConvertionRemoveSelectedRow(object sender, RoutedEventArgs e)
+        {
+            NameConvertionItems.Items.RemoveAt(NameConvertionItems.SelectedIndex);
+        }
+
+        private void SetNameConvertionTable()
+        {
+            NameConvertionItems.Items.Clear();
+            foreach (KeyValuePair<string, string> ContextBindingLine in validationData.bindingContainer.ContextBinding)
+            {
+                NameConvertionData ncs = new NameConvertionData(ContextBindingLine.Key, ContextBindingLine.Value);
+                NameConvertionItems.Items.Add(ncs);
+            }
+        }
+
+        private void OnNameConvertionAddRow(object sender, RoutedEventArgs e)
+        {
+            NameConvertionData ncs = new NameConvertionData("", "");
+            NameConvertionItems.Items.Add(ncs);
+        }
+      
+
     }
 }
