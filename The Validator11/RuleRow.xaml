@@ -11,7 +11,7 @@
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <Button Name="DeleteRule"       Margin="-2,2" Padding="-1,-5" Width="13" Height="14" Click="OnX_Click">X</Button>
-                            <TextBox Name="RuleName"        Margin="8,2,0,0" Padding="1,2" Width="100" Height="18" >New Rule</TextBox>
+                            <TextBox Name="RuleName"        Margin="8,2,0,0" Padding="1,2" Width="150" Height="18" Background="Beige">New Rule</TextBox>
                         </StackPanel>
                     </GroupBox.Header>
 

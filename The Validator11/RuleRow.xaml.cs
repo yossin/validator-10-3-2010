@@ -28,6 +28,7 @@ namespace The_Validator11
             InitializeComponent();
             SetComboValues();
 
+            RuleName.Text = rule.RuleName;
             ProperyName.Text = rule.Property.ContextKey;
             ProperyPath.Text = rule.Property.ReferenceMeaning;
             
