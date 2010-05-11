@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ValidationFlow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="ValidatorCoreLib">
+  <flows>
+    <ValidationFlow>
+      <flows />
+      <rules>
+        <ValidationRule>
+          <RuleName>New Rule</RuleName>
+          <Property>
+            <ReferenceMeaning>size of paper </ReferenceMeaning>
+            <ContextKey>custom paper</ContextKey>
+          </Property>
+          <ComparedObject>
+            <ReferenceMeaning>size of paper </ReferenceMeaning>
+            <ContextKey>A4</ContextKey>
+          </ComparedObject>
+          <OperatorName>ValidatorCoreLib.EqualOperator</OperatorName>
+          <validationResolve>
+            <ResolveObjects>
+              <anyType xsi:type="xsd:string">Change value to A4</anyType>
+            </ResolveObjects>
+            <ResolveObjectSelected>0</ResolveObjectSelected>
+            <AutoResolve>false</AutoResolve>
+            <ResolveStringForUI>This is not a A4 Paper</ResolveStringForUI>
+          </validationResolve>
+        </ValidationRule>
+      </rules>
+      <UseAndOperator>true</UseAndOperator>
+      <Name>Is custom paper is A4</Name>
+    </ValidationFlow>
+    <ValidationFlow>
+      <flows />
+      <rules>
+        <ValidationRule>
+          <RuleName>Check paper size A4H</RuleName>
+          <Property>
+            <ReferenceMeaning>paper size height</ReferenceMeaning>
+            <ContextKey>A4</ContextKey>
+          </Property>
+          <ComparedObject>
+            <ReferenceMeaning>System.Int32</ReferenceMeaning>
+            <ContextKey>310</ContextKey>
+          </ComparedObject>
+          <OperatorName>ValidatorCoreLib.EqualOperator</OperatorName>
+          <validationResolve>
+            <ResolveObjects>
+              <anyType xsi:type="xsd:string">310</anyType>
+            </ResolveObjects>
+            <ResolveObjectSelected>0</ResolveObjectSelected>
+            <AutoResolve>true</AutoResolve>
+            <ResolveStringForUI />
+          </validationResolve>
+        </ValidationRule>
+        <ValidationRule>
+          <RuleName>Check paper size A4W</RuleName>
+          <Property>
+            <ReferenceMeaning>paper size width</ReferenceMeaning>
+            <ContextKey>A4</ContextKey>
+          </Property>
+          <ComparedObject>
+            <ReferenceMeaning>System.Int32</ReferenceMeaning>
+            <ContextKey>270</ContextKey>
+          </ComparedObject>
+          <OperatorName>ValidatorCoreLib.EqualOperator</OperatorName>
+          <validationResolve>
+            <ResolveObjects>
+              <anyType xsi:type="xsd:string">270</anyType>
+              <anyType xsi:type="xsd:string">New Resolve</anyType>
+            </ResolveObjects>
+            <ResolveObjectSelected>1</ResolveObjectSelected>
+            <AutoResolve>true</AutoResolve>
+            <ResolveStringForUI />
+          </validationResolve>
+        </ValidationRule>
+      </rules>
+      <UseAndOperator>true</UseAndOperator>
+      <Name>Check paper size A4</Name>
+    </ValidationFlow>
+  </flows>
+  <rules />
+  <UseAndOperator>true</UseAndOperator>
+  <Name>Flow 1</Name>
+</ValidationFlow>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BindingContainer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="ValidatorCoreLib">
+  <referenceBindingContainer>
+    <referenceBinding>
+      <Key>Paper</Key>
+      <Value>Paper</Value>
+    </referenceBinding>
+    <referenceBinding>
+      <Key>size of paper </Key>
+      <Value>Size</Value>
+    </referenceBinding>
+    <referenceBinding>
+      <Key>paper size height</Key>
+      <Value>y</Value>
+    </referenceBinding>
+    <referenceBinding>
+      <Key>paper size width</Key>
+      <Value>x</Value>
+    </referenceBinding>
+  </referenceBindingContainer>
+  <contextBindingContainer>
+    <contextBinding>
+      <Key>A4</Key>
+      <Value>PAPER_SIZE_A4</Value>
+    </contextBinding>
+    <contextBinding>
+      <Key>custom paper</Key>
+      <Value>CUSTOM_PAPER_SIZE</Value>
+    </contextBinding>
+  </contextBindingContainer>
+</BindingContainer>
