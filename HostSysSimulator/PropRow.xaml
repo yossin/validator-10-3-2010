@@ -33,8 +33,11 @@
                 <TextBox Name="StringData" Text="String Data" Margin="0,1" Height="20" Width="192"></TextBox>
             </WrapPanel>
         </RadioButton>
-        
-        <RadioButton    Grid.Row="1" Grid.Column="4"    Margin="0,3,0,0" Name="rb2">
+                <WrapPanel Grid.Row="3" Grid.Column="2">
+                    <TextBlock          Text="In case of Paper or Point object:" Padding="5,6" ></TextBlock>
+                    <TextBlock      Text="Please insert value as %d,%d" Padding="5,0" ></TextBlock>
+                </WrapPanel>
+                <RadioButton    Grid.Row="1" Grid.Column="4"    Margin="0,3,0,0" Name="rb2">
             <WrapPanel>
                 <TextBlock Text="Integer Data:" Width="70" Padding="3,4"></TextBlock>
                 <TextBox Name="IntData" Text="Integer Data" Margin="0,1" Height="20" Width="192"></TextBox>
@@ -51,12 +54,14 @@
         <RadioButton    Grid.Row="3" Grid.Column="4"    Margin="0,3,0,0" Name="rb4">
             <WrapPanel>
                 <TextBlock  Text="Object Data:" Width="70" Padding="8,4"></TextBlock>
-                <ComboBox   Name="ObjectSet" Height="20" Width="50" Margin="0,0">
+                <ComboBox   Name="ObjectSet" Height="20" Width="192" Margin="0,0">
                     <ComboBoxItem>DummyA</ComboBoxItem>
                     <ComboBoxItem>DummyB</ComboBoxItem>
-                </ComboBox>
-                <TextBlock  Text="String Value:" Width="70" Padding="5,4"></TextBlock>
-                <TextBox Name="ObjectStringValue" Text="String Value" Margin="0,1" Height="20" Width="72"></TextBox>
+                    <ComboBoxItem>Paper</ComboBoxItem>
+                    <ComboBoxItem>Point</ComboBoxItem>
+                        </ComboBox>
+                <TextBlock  Text="Value:" Width="70" Padding="39,4"></TextBlock>
+                <TextBox Name="ObjectStringValue" Text="String Value" Margin="0,1" Height="20" Width="192"></TextBox>
 
             </WrapPanel>
         </RadioButton>
