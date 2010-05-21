@@ -20,7 +20,7 @@ namespace ValidatorSDK
 
 
         public const string sFileFlow = @"Flow1.xml";
-        public const string sFileConvertionTree = @"ConvertionTree.xml";
+        public const string sFileConvertionTreeListItem = @"ConvertionTreeListItem.xml";
         public const string sFileConvertionPathItems = @"FileConvertionPathItems.xml";
         public const string sFileConvertionBindingContainer = @"FileConvertionBindingContainer.xml";
 
@@ -86,21 +86,21 @@ namespace ValidatorSDK
             w2.Close();
         }
 
-        static public ConvertionTree LoadConvertionTree(string sFolder)
+        static public ConvertionTreeListItem LoadConvertionTreeListItem(string sFolder)
         {
             string sFile = sFolder;
-            sFile += sFileConvertionTree;
+            sFile += sFileConvertionTreeListItem;
             if (!File.Exists(sFile))
                 return null;
 
-            return LoadConvertionTreeData(sFile);
+            return LoadConvertionTreeListItemData(sFile);
         }
-        static private ConvertionTree LoadConvertionTreeData(string sFile)
+        static private ConvertionTreeListItem LoadConvertionTreeListItemData(string sFile)
         {
             // deSerialize
             TextReader w2 = new StreamReader(sFile);
-            XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionTree));
-            ConvertionTree ct = (ValidatorCoreLib.ConvertionTree)s2.Deserialize(w2);
+            XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionTreeListItem));
+            ConvertionTreeListItem ct = (ValidatorCoreLib.ConvertionTreeListItem)s2.Deserialize(w2);
             w2.Close();
             return ct;
         }
@@ -157,15 +157,15 @@ namespace ValidatorSDK
             w.Close();
         }
 
-        static public void SaveConvertionTreeData(string sFolder, ConvertionTree ct)
+        static public void SaveConvertionTreeListItemData(string sFolder, ConvertionTreeListItem ctli)
         {
             string sFile = sFolder;
-            sFile += sFileConvertionTree;
+            sFile += sFileConvertionTreeListItem;
 
             // Serialize
             TextWriter w = new StreamWriter(sFile);
-            XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionTree));
-            s.Serialize(w, ct);
+            XmlSerializer s = new XmlSerializer(typeof(ValidatorCoreLib.ConvertionTreeListItem));
+            s.Serialize(w, ctli);
             w.Close();
         }
 
