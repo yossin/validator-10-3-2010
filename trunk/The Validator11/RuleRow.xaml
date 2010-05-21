@@ -7,44 +7,44 @@
             <Grid>
                 <Rectangle Margin="-6" StrokeThickness="1.25" Stroke="Black">
                 </Rectangle>
-                <GroupBox Height="133">
+                <GroupBox Height="147">
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <Button Name="DeleteRule"       Margin="-2,2" Padding="-1,-5" Width="13" Height="14" Click="OnX_Click">X</Button>
-                            <TextBox Name="RuleName"        Margin="8,2,0,0" Padding="1,2" Width="150" Height="18" Background="Beige">New Rule</TextBox>
+                            <TextBox Name="RuleName"        Margin="8,2,0,0" Padding="0,0" Width="150" Height="18" Background="Beige">New Rule</TextBox>
                         </StackPanel>
                     </GroupBox.Header>
 
                     <Grid Height="Auto" Width="399" Grid.Row="0" Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="39" />
-                            <RowDefinition Height="38" />
-                            <RowDefinition Height="40" />
+                            <RowDefinition Height="44" />
+                            <RowDefinition Height="44" />
                         </Grid.RowDefinitions>
 
                         <!--Row1-->
-                        <GroupBox Grid.Row="0" Grid.Column="0" Header="Property:" BorderThickness="0">
+                        <GroupBox Grid.Row="0" Grid.Column="0" Foreground="RoyalBlue" Header="Property:" BorderThickness="0">
                             <StackPanel Orientation="Horizontal" Margin="10,-4,0,0" >
-                                <Label Name="label_key"         Margin="118,0,0,0" Padding="3,6,0,0"  Height="26" Width="38">Name:</Label>
-                                <TextBox Name="ProperyName"      Margin="0,4,0,0" Padding="1,2" Width="90" Height="19" >0</TextBox>
+                                <Label Name="label_key"         Margin="118,0,0,0" Padding="2,4,0,0"  Height="26" Width="38">Name:</Label>
+                                <TextBox Name="ProperyName"      Margin="0,4,0,0" Padding="0,-2" Width="90" Height="21" >0</TextBox>
 
-                                <Label Name="label_Path"        Margin="1,2,0,0" Height="23" Width="38">Type:</Label>
-                                <TextBox Name="ProperyPath"     Margin="1,4,0,0" Padding="1,2" Text="Rule Name" Width="90" Height="19"></TextBox>
+                                <Label Name="label_Path"        Padding="8,4,0,0" Height="23" Width="38">Type:</Label>
+                                <TextBox Name="ProperyPath"     Margin="1,4,0,0" Padding="0,-2" Text="Rule Name" Width="90" Height="21"></TextBox>
                             </StackPanel>
                         </GroupBox>
 
                         <!--Row2-->
-                        <GroupBox Grid.Row="1" Grid.Column="0" Header="Compare To:" BorderThickness="0" Margin="0,-4,0,0" Foreground="RoyalBlue">
+                        <GroupBox Grid.Row="1" Grid.Column="0" Header="Compare To:" BorderThickness="0" Padding="0,2" Margin="0,-4,0,0" Foreground="RoyalBlue">
                             <StackPanel Orientation="Horizontal" Margin="10,-4,0,0">
-                                <ComboBox Name="ObjectType"     Margin="4,0" Width="62" Height="19" SelectionChanged="onObjectTypeSelectionChanged"></ComboBox>
+                                <ComboBox Name="ObjectType"     Margin="4,0" Width="62" Height="21" SelectionChanged="onObjectTypeSelectionChanged"></ComboBox>
 
-                                <ComboBox Name="Operator"       Margin="1,0,0,0" Width="43" Height="19"></ComboBox>
+                                <ComboBox Name="Operator"       Margin="1,0,0,0" Width="43" Height="21"></ComboBox>
 
-                                <TextBlock Name="label_key_"    Foreground="Black"    Margin="4,0,0,0" Padding="3,6,0,0"  Height="26" Width="38">Name:</TextBlock>
-                                <TextBox Name="CompareTo"       Margin="0,4,0,0" Padding="1,2" Width="90" Height="19" >0</TextBox>
+                                <TextBlock Name="label_key_"    Foreground="Black"    Margin="4,-2,0,0" Padding="3,6,0,0"  Height="26" Width="38">Name:</TextBlock>
+                                <TextBox Name="CompareTo"       Margin="0,4,0,0" Padding="0,-2" Width="90" Height="21" >0</TextBox>
 
-                                <Label Name="label_Path_"        Margin="1,2,0,0" Height="23" Width="38">Type:</Label>
-                                <TextBox Name="CompareToPath"     Margin="1,4,0,0" Padding="1,2" Text="Rule Name" Width="90" Height="19"></TextBox>
+                                <Label Name="label_Path_"        Padding="8,4,0,0" Height="23" Width="38">Type:</Label>
+                                <TextBox Name="CompareToPath"     Margin="1,4,0,0" Padding="0,-2" Text="Rule Name" Width="90" Height="21"></TextBox>
                             </StackPanel>
                         </GroupBox>
 
@@ -53,10 +53,10 @@
                             <GroupBox.Header>
                                 <CheckBox Name="ResolveCheck" Foreground="RoyalBlue" Background="LightSteelBlue" BorderThickness="0" FontWeight="3" Margin="0,0,0,0" Height="18" Width="100" Click="ResolveCheck_Clicked">Auto Resolve</CheckBox>
                             </GroupBox.Header>
-                            <StackPanel Orientation="Horizontal" Margin="10,-11,0,0" Height="25">
-                                <TextBox Name="ResolveMsg"      Margin="4,3,4,0" Padding="1,2" TextWrapping="Wrap" Height="19" Width="243" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Text="Message"></TextBox>
+                            <StackPanel Orientation="Horizontal" Margin="10,-10,0,0" Height="30">
+                                <TextBox Name="ResolveMsg"      Margin="4,6,4,0" Padding="0,1" TextWrapping="Wrap" Height="21" Width="243" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Text="Message"></TextBox>
 
-                                <ComboBox Name="ResolveValues"  Margin="2,-1,0,0" Height="24" Width="125" SelectionChanged="ResolveValueSelectionChanged"></ComboBox>
+                                <ComboBox Name="ResolveValues"  Margin="2,-1,0,0" Height="25" Width="123" SelectionChanged="ResolveValueSelectionChanged"></ComboBox>
                             </StackPanel>
                         </GroupBox>
 
