@@ -19,18 +19,14 @@ using ValidatorSDK;
 using ValidatorCoreLib;
 
 namespace The_Validator11
-{
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
-    ///         
+{    
     public partial class Window1 : Window
     {
         public string sLoadFolder = @"C:\validationFiles\";
  
         ValidationData validationData = new ValidationData();
         ConvertionPathItems convertionPathItems = new ConvertionPathItems();
-        ConvertionTree convertionTreeItem = new ConvertionTree();
+        ConvertionTreeListItem convertionTreeListItem = new ConvertionTreeListItem();
 
         public Window1()
         {
@@ -39,7 +35,6 @@ namespace The_Validator11
             CreateEmpteConvertionTree();
 
             CreateEmpteNameConvertionRow();
-            
         }
 
         private void CreateEmpteFlowTree()
@@ -52,10 +47,9 @@ namespace The_Validator11
         
         private void CreateEmpteConvertionTree()
         {
-            ConvertionClassItem cci = new ConvertionClassItem(ConvertionClassItem.sIgnoredString, @"Attribute Name"/*, convertionPathItems*/, Convertion_TreeViewItem/*, Convertion_TreeViewItem*/);
-            cci.RemoveConvertionClassItem.IsEnabled = false;
-            Convertion_TreeViewItem.Header = cci;
-            Convertion_TreeViewItem.IsExpanded = true;
+           ConvertionClassItem_AddNew pr = new ConvertionClassItem_AddNew(Convertion_TreeViewItem);
+           Convertion_TreeViewItem.Items.Add(pr);
+           Convertion_TreeViewItem.IsExpanded = true;
         }
 
         private void OnLoad(object sender, RoutedEventArgs e)
@@ -64,11 +58,9 @@ namespace The_Validator11
 
             LoadFlow();
 
-            //LoadConvertionPathItems();
-            //UpdateConvertionPathItemsFromFlow();
-
             LoadConvertionTree();
             LoadNameConvertion();
+            CreateEmpteConvertionTree();
         }
 
         private bool SetLoadFolder()
@@ -108,15 +100,14 @@ namespace The_Validator11
         {
             Convertion_TreeViewItem.Items.Clear();
 
-            convertionTreeItem = ValidationData.LoadConvertionTree(sLoadFolder) ;
-            if (convertionTreeItem != null)
+            convertionTreeListItem = ValidationData.LoadConvertionTreeListItem(sLoadFolder);
+            if (convertionTreeListItem != null)
             {
-                AddConvertion(convertionTreeItem/*, convertionPathItems*/, Convertion_TreeViewItem);
-                ((ConvertionClassItem)Convertion_TreeViewItem.Header).RemoveConvertionClassItem.IsEnabled = false;
+                AddConvertionListItem(convertionTreeListItem);
             }
             else
             {
-                string sMsg = ValidatorSDK.ValidationData.sFileConvertionTree + @" doesn't exist";
+                string sMsg = ValidatorSDK.ValidationData.sFileConvertionTreeListItem + @" doesn't exist";
                 MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
             }
         }
@@ -136,18 +127,6 @@ namespace The_Validator11
             }
         }
 
-        /*private void LoadConvertionPathItems()
-        {
-            convertionPathItems.Clear();
-
-            convertionPathItems = ValidationData.LoadConvertionPathItems(sLoadFolder);
-            if ( convertionPathItems == null)
-            {
-                string sMsg = ValidatorSDK.ValidationData.sFileConvertionPathItems + @" doesn't exist";
-                MessageBox.Show(sMsg, "File load error", MessageBoxButton.OK );
-            }
-        }*/
-
         private void OnSave(object sender, RoutedEventArgs e)
         {
             SetLoadFolder();
@@ -159,23 +138,15 @@ namespace The_Validator11
             else
                 validationData.SaveFlowData(sLoadFolder);
 
-            convertionTreeItem.Clear();
-            if (!GetValidationConvertionTreeItemFromTree(convertionTreeItem, Convertion_TreeViewItem))
-                convertionTreeItem = null;
+            convertionTreeListItem.Clear();
+            if (!GetValidationConvertionTreeItemFromTree(convertionTreeListItem))
+                convertionTreeListItem = null;
             else
             {
-                ValidationData.SaveConvertionTreeData(sLoadFolder, convertionTreeItem);
+                ValidationData.SaveConvertionTreeListItemData(sLoadFolder, convertionTreeListItem);
                 validationData.bindingContainer = CreateBindingContainer();
                 validationData.SaveBindingContainerData(sLoadFolder);
-            }
-            
-            
-
-
-            /*if (!GetConvertionPathItems(convertionPathItems))
-                convertionPathItems = null;
-            else
-                ValidationData.SaveConvertionConvertionPathItemsData(sLoadFolder, convertionPathItems);*/
+            }     
         }
 
         // return false when the flow is empty and should be removed(caller resposability)
@@ -209,7 +180,23 @@ namespace The_Validator11
         }
 
         // return false when the ConvertionItem is empty and should be removed(caller resposability)
-        private bool GetValidationConvertionTreeItemFromTree(ValidatorCoreLib.ConvertionTree convertionItem, TreeViewItem tvi)
+        private bool GetValidationConvertionTreeItemFromTree(ValidatorCoreLib.ConvertionTreeListItem ctli)
+        {
+            ctli.Clear();
+            bool bRes = true;
+//            foreach (TreeViewItem tvi in Convertion_TreeViewItem.Items)
+            for (int ii = 0; ii < Convertion_TreeViewItem.Items.Count - 1; ii ++ )
+            {
+                TreeViewItem tvi = (TreeViewItem )Convertion_TreeViewItem.Items[ii];
+                if (tvi.Header == null || tvi.Header.GetType().ToString().Contains("add"))
+                    continue;
+                ValidatorCoreLib.ConvertionTree convertionTree = new ConvertionTree();
+                bRes |= GetValidationConvertionTreeItemFromTreeHelper(convertionTree, tvi);
+                ctli.Add(convertionTree);             
+            }
+            return bRes;
+        }
+        private bool GetValidationConvertionTreeItemFromTreeHelper(ValidatorCoreLib.ConvertionTree convertionItem, TreeViewItem tvi)
         {
             if (tvi.Header == null)
                 return false;
@@ -223,20 +210,12 @@ namespace The_Validator11
                 if (ob.GetType().Equals(typeof(TreeViewItem)))  // ConvertionItem
                 {
                     ValidatorCoreLib.ConvertionTree convertionItemAdd = new ValidatorCoreLib.ConvertionTree();
-                    if (GetValidationConvertionTreeItemFromTree(convertionItemAdd, (TreeViewItem)ob))
+                    if (GetValidationConvertionTreeItemFromTreeHelper(convertionItemAdd, (TreeViewItem)ob))
                         convertionItem.Add(convertionItemAdd);
                 }
             }
             return true;
         }
-        
-        // return false when the ConvertionItem is empty and should be removed(caller resposability)
-    /*    private bool GetConvertionPathItems(ValidatorCoreLib.ConvertionPathItems convertionPathItems)
-        {
-            convertionPathItems.Clear();
-            ((ConvertionClassItem)Convertion_TreeViewItem.Header).GetConvertionPathItems(convertionPathItems);
-            return true;
-        }*/       
 
         private void AddFlowsAndRules(ValidatorCoreLib.ValidationFlow in_flow, TreeViewItem tvi)
         {
@@ -250,7 +229,6 @@ namespace The_Validator11
             {
                 RuleRow rr = new RuleRow(rule, RuleWrapPanel);
                 RuleWrapPanel.Children.Add(rr);
-                //tvi.Items.Add(rr);
             }
             tvi.Items.Add(RuleWrapPanel);
 
@@ -263,10 +241,18 @@ namespace The_Validator11
             }
         }
 
-        private void AddConvertion(ValidatorCoreLib.ConvertionTree vci/*, ConvertionPathItems convertionPathItems*/, TreeViewItem tvi)
+        private void AddConvertionListItem(ValidatorCoreLib.ConvertionTreeListItem ctli)
         {
-            //int nSelectedComboIndex = convertionPathItems.IsItemExist(vci.convertionAttribute) + 1/*none is the first item*/ ;  
-            ConvertionClassItem cci = new ConvertionClassItem(vci.convertionPath, vci.convertionAttribute/*nSelectedComboIndex, convertionPathItems*/, tvi/*, Convertion_TreeViewItem*/);
+            foreach (ConvertionTree ct in convertionTreeListItem.convertionTreeListItem)
+            {
+                TreeViewItem tvi = new TreeViewItem();
+                AddConvertionRec(ct, tvi);
+                Convertion_TreeViewItem.Items.Add(tvi);
+            }
+        }
+        private void AddConvertionRec(ValidatorCoreLib.ConvertionTree vci, TreeViewItem tvi)
+        {
+            ConvertionClassItem cci = new ConvertionClassItem(vci.convertionPath, vci.convertionAttribute, tvi);
             tvi.Header = cci;
             tvi.IsExpanded = true;
  
@@ -274,7 +260,7 @@ namespace The_Validator11
             {
                 TreeViewItem Newitem = new TreeViewItem();
                 Newitem.IsExpanded = true;
-                AddConvertion(chiled_vci/*, convertionPathItems*/, Newitem);
+                AddConvertionRec(chiled_vci, Newitem);
                 tvi.Items.Add(Newitem);
             }
         }
@@ -332,12 +318,13 @@ namespace The_Validator11
             Dictionary<string, string> referenceBinding = new Dictionary<string, string>();
             Dictionary<string, string> contextBinding = new Dictionary<string, string>();
 
-            CreateBindingContainerRec(convertionTreeItem, "", referenceBinding);
+            foreach (ConvertionTree ct in convertionTreeListItem.convertionTreeListItem)
+                CreateBindingContainerRec(ct, "", referenceBinding);
             GetNameConvertionData(contextBinding);
 
             return new BindingContainer(contextBinding, referenceBinding);
         }
-    
+
         private void CreateBindingContainerRec(ValidatorCoreLib.ConvertionTree convertionTree, string sBuiltKey, Dictionary<string, string> referenceBinding)
         {
             if ( ! convertionTree.convertionPath.Equals(ConvertionClassItem.sIgnoredString) ) 
@@ -395,7 +382,5 @@ namespace The_Validator11
             NameConvertionData ncs = new NameConvertionData("", "");
             NameConvertionItems.Items.Add(ncs);
         }
-      
-
     }
 }
