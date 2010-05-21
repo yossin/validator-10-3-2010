@@ -6,16 +6,16 @@
       <Value>Paper</Value>
     </referenceBinding>
     <referenceBinding>
-      <Key>size of paper </Key>
-      <Value>Size</Value>
-    </referenceBinding>
-    <referenceBinding>
-      <Key>paper size height</Key>
-      <Value>y</Value>
+      <Key>size of paper</Key>
+      <Value>Attribute Name</Value>
     </referenceBinding>
     <referenceBinding>
       <Key>paper size width</Key>
       <Value>x</Value>
+    </referenceBinding>
+    <referenceBinding>
+      <Key>paper size height</Key>
+      <Value>y</Value>
     </referenceBinding>
   </referenceBindingContainer>
   <contextBindingContainer>
