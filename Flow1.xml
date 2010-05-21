@@ -7,11 +7,11 @@
         <ValidationRule>
           <RuleName>New Rule</RuleName>
           <Property>
-            <ReferenceMeaning>size of paper </ReferenceMeaning>
+            <ReferenceMeaning>size of paper</ReferenceMeaning>
             <ContextKey>custom paper</ContextKey>
           </Property>
           <ComparedObject>
-            <ReferenceMeaning>size of paper </ReferenceMeaning>
+            <ReferenceMeaning>size of paper</ReferenceMeaning>
             <ContextKey>A4</ContextKey>
           </ComparedObject>
           <OperatorName>ValidatorCoreLib.EqualOperator</OperatorName>
