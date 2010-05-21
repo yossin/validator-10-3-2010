@@ -42,6 +42,8 @@ namespace HostSysSim
             this.FloatData.Text = prd.FloatData.ToString();
             this.ObjectSet.SelectedIndex = prd.ObjectDataComboSelected;
             this.ObjectStringValue.Text = prd.ObjectDataStringData;
+
+            SetRBView();
         }
 
         public PropRowData GetPropRowData()
@@ -58,6 +60,35 @@ namespace HostSysSim
         private void RemoveProp_Click(object sender, RoutedEventArgs e)
         {
             tvItem.Items.Remove(this);
+        }
+
+        private void RB_Clicked(object sender, RoutedEventArgs e)
+        {
+            SetRBView();
+        }
+
+        private void SetRBView()
+        {
+            bool[] b = { false, false, false, false };
+
+            if (rb1.IsChecked == true) b[0] = true;
+            else if (rb2.IsChecked == true) b[1] = true;
+            else if (rb3.IsChecked == true) b[2] = true;
+            else if (rb4.IsChecked == true) b[3] = true;
+
+            StringDataTB.IsEnabled = b[0];
+            StringData.IsEnabled = b[0];
+
+            IntDataTB.IsEnabled = b[1];
+            IntData.IsEnabled = b[1];
+
+            FloatDataTB.IsEnabled = b[2];
+            FloatData.IsEnabled = b[2];
+
+            ObjectSetTB.IsEnabled = b[3];
+            ObjectSet.IsEnabled = b[3];
+            ObjectStringValue.IsEnabled = b[3];
+            ObjectStringValueTB.IsEnabled = b[3];
         }
     }
 }
