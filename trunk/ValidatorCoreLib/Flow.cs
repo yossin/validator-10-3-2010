@@ -41,7 +41,7 @@ namespace ValidatorCoreLib
             }
             foreach (ValidationRule rule in rules)
             {
-                ErrorValidationEvent validationEvent = rule.Validate(request);
+                ErrorValidationEvent validationEvent = rule.Validate(request, flowErrorTrace);
                 flowErrorTrace.AddErrorValidationEvent(validationEvent);
             }
 
