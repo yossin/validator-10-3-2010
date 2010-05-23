@@ -32,6 +32,9 @@ namespace The_Validator11
         {
             TreeViewItem tvi = new TreeViewItem();
             ConvertionClassItem fr = new ConvertionClassItem(ConvertionClassItem.sIgnoredString, @"Attribute Name", tvi);
+            fr.convertionAttributeTB.Visibility = Visibility.Hidden;
+            fr.convertionAttribute.Visibility = Visibility.Hidden;
+            fr.convertionAttribute.Text = "";
             tvi.Header = fr;
             tvi.IsExpanded = true;
             tviParent.Items.Insert(tviParent.Items.Count - 1, tvi);

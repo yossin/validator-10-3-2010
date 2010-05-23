@@ -33,8 +33,6 @@ namespace The_Validator11
             InitializeComponent();
             CreateEmpteFlowTree();
             CreateEmpteConvertionTree();
-
-            CreateEmpteNameConvertionRow();
         }
 
         private void CreateEmpteFlowTree()
@@ -246,13 +244,19 @@ namespace The_Validator11
             foreach (ConvertionTree ct in convertionTreeListItem.convertionTreeListItem)
             {
                 TreeViewItem tvi = new TreeViewItem();
-                AddConvertionRec(ct, tvi);
+                AddConvertionRec(ct, tvi, true);
                 Convertion_TreeViewItem.Items.Add(tvi);
             }
         }
-        private void AddConvertionRec(ValidatorCoreLib.ConvertionTree vci, TreeViewItem tvi)
+        private void AddConvertionRec(ValidatorCoreLib.ConvertionTree vci, TreeViewItem tvi, Boolean bHead)
         {
             ConvertionClassItem cci = new ConvertionClassItem(vci.convertionPath, vci.convertionAttribute, tvi);
+            if (bHead)
+            {
+                cci.convertionAttributeTB.Visibility = Visibility.Hidden;
+                cci.convertionAttribute.Visibility = Visibility.Hidden;
+                cci.convertionAttribute.Text = "";
+            }
             tvi.Header = cci;
             tvi.IsExpanded = true;
  
@@ -260,7 +264,7 @@ namespace The_Validator11
             {
                 TreeViewItem Newitem = new TreeViewItem();
                 Newitem.IsExpanded = true;
-                AddConvertionRec(chiled_vci, Newitem);
+                AddConvertionRec(chiled_vci, Newitem, false);
                 tvi.Items.Add(Newitem);
             }
         }
@@ -319,7 +323,7 @@ namespace The_Validator11
             Dictionary<string, string> contextBinding = new Dictionary<string, string>();
 
             foreach (ConvertionTree ct in convertionTreeListItem.convertionTreeListItem)
-                CreateBindingContainerRec(ct, "", referenceBinding);
+                CreateBindingContainerRec(ct, ct.convertionAttribute, referenceBinding);
             GetNameConvertionData(contextBinding);
 
             return new BindingContainer(contextBinding, referenceBinding);
@@ -327,22 +331,21 @@ namespace The_Validator11
 
         private void CreateBindingContainerRec(ValidatorCoreLib.ConvertionTree convertionTree, string sBuiltKey, Dictionary<string, string> referenceBinding)
         {
-            if ( ! convertionTree.convertionPath.Equals(ConvertionClassItem.sIgnoredString) ) 
-                referenceBinding[convertionTree.convertionPath] = convertionTree.convertionAttribute ;
+            if ( ! convertionTree.convertionPath.Equals(ConvertionClassItem.sIgnoredString) )
+                referenceBinding[convertionTree.convertionPath] = sBuiltKey;
 
             foreach (ValidatorCoreLib.ConvertionTree chiled_convertionTree in convertionTree.convertionItems)
             {
-                string sNewKey = sBuiltKey ;
-                sNewKey += "." ;
-                sNewKey += convertionTree.convertionAttribute;
+                string sNewKey = "" ;
+                if ( ! sBuiltKey.Equals(""))
+                {
+                    sNewKey = sBuiltKey ;
+                    sNewKey += "." ;
+                }
+                sNewKey += chiled_convertionTree.convertionAttribute;
 
                 CreateBindingContainerRec(chiled_convertionTree, sNewKey, referenceBinding);
             }
-        }
-
-           
-        private void CreateEmpteNameConvertionRow()
-        {
         }
     
         public class NameConvertionData
