@@ -83,6 +83,7 @@ namespace ValidatorSDK
             TextReader w2 = new StreamReader(sFile);
             XmlSerializer s2 = new XmlSerializer(typeof(ValidatorCoreLib.ValidationFlow));
             flow = (ValidatorCoreLib.ValidationFlow)s2.Deserialize(w2);
+            flow.resetSerializationObbjects();
             w2.Close();
         }
 
