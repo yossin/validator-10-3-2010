@@ -6,13 +6,6 @@ using ValidatorCoreLib;
 using ValidatorSDK;
 
 
-
-
-
-
-
-
-
 namespace Mock1Test
 {
 
@@ -45,21 +38,21 @@ namespace Mock1Test
             ValidationFlow flow11 = new ValidationFlow("person_validations", true);
             flow1.Add(flow11);
 
-            ValidationRule role111 = new ValidationRule(@"Rule 1", new PropertySelection("person1", "Person's Name"), new PropertySelection("person2", "Person's Name"), new EqualOperator(), true, "resolve string for ui");
+            ValidationRule role111 = new ValidationRule("rule-111", new PropertySelection("person1","Person's Name"), "Person", new EqualOperator(), true, "resolve string for ui");
             flow11.Add(role111);
 
-            ValidationRule role112 = new ValidationRule(@"Rule 2", new PropertySelection("person1", "Person"), new PropertySelection("person2", "Person"), new EqualOperator(), true, "resolve string for ui");
+            ValidationRule role112 = new ValidationRule("rule-112", new PropertySelection("person1", "Person"), new PropertySelection("person2", "Person"), new EqualOperator(), true, "resolve string for ui");
             flow11.Add(role112);
 
             ValidationFlow flow12 = new ValidationFlow("person_age_validations", true);
             flow1.Add(flow12);
 
-            ValidationRule role121 = new ValidationRule(@"Rule 3", new PropertySelection("person3", "Person's Age"), new PropertySelection(@"30", @"System.Int32"), new EqualOperator(), true, "age must be 30");
+            ValidationRule role121 = new ValidationRule("rule-121", new PropertySelection("person3", "Person's Age"), 30, new EqualOperator(), true, "age must be 30");
             flow12.Add(role121);
             
             return flow1;
         }
-        
+
         private BindingContainer CreateBindingContainer()
         {
 

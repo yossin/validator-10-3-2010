@@ -25,6 +25,10 @@ namespace ValidatorCoreLib
             {
                 this.message = message;
             }
+            public override string ToString()
+            {
+                return message;
+            }
         }
         public abstract class RuleValidationEvent : BaseValidationEvent
         {

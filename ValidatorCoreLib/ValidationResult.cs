@@ -8,51 +8,57 @@ namespace ValidatorCoreLib
 {
     public class ValidationResult
     {
-        ValidationErrorTrace errorTrace=null;
+        FlowErrorTrace errorTrace=null;
+        List<ErrorValidationEvent> events;
         // number of errors!
 
-
-
-        public void AddErrorEvent(ErrorValidationEvent error)
+        public ValidationResult(FlowErrorTrace errorTrace)
         {
-            if (errorTrace == null)
-            {
-                errorTrace = new ValidationErrorTrace();
-            }
-            errorTrace.AddErrorValidationEvent(error);
-        }
-        // todo: fix a bug here...
-        internal void NotifiyFlowValidationEndIteration()
-        {
+            this.errorTrace = errorTrace;
+            events = new List<ErrorValidationEvent>();
             if (errorTrace != null)
             {
-                errorTrace = new ValidationErrorTrace(errorTrace);
+                AddErrors(errorTrace, events);
             }
         }
 
+        public bool ContainsError { get { return events.Count>0; } }
 
-        public ValidationErrorTrace ErrorTrace { get { return errorTrace; } }
-       
-       
+        public FlowErrorTrace ErrorTrace { get { return errorTrace; } }
 
+        private static void AddErrors(FlowErrorTrace errorTrace, List<ErrorValidationEvent> events)
+        {
+            foreach(ErrorValidationEvent e in errorTrace.ErrorEvents)
+            {
+                events.Add(e);
+            }
+            foreach (FlowErrorTrace e in errorTrace.FlowErrors)
+            {
+                AddErrors(e, events);
+            }
+
+        }
+        public List<ErrorValidationEvent> ErrorValidationEvents
+        {
+            get { return events; }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("[");
+            foreach (ErrorValidationEvent e in ErrorValidationEvents)
+            {
+                builder.Append(e.Message);
+                builder.Append(", ");
+            }
+            builder.Remove(builder.Length - 2,2);
+            builder.Append("]");
+            return builder.ToString();
+        }
     }
 
-    public class ValidationErrorTrace
-    {
-        List<ErrorValidationEvent> errorEvents = new List<ErrorValidationEvent>();
-        ValidationErrorTrace causedBy = null;
-        internal ValidationErrorTrace() { }
-        internal ValidationErrorTrace(ValidationErrorTrace causedBy)
-        {
-            this.causedBy = causedBy;
-        }
-        public ValidationErrorTrace CausedBy { get { return causedBy; } }
-        public void AddErrorValidationEvent(ErrorValidationEvent errorEvent)
-        {
-            errorEvents.Add(errorEvent);
-        }
-        public List<ErrorValidationEvent> ErrorEvents {get{return errorEvents;}}
-    }
+    
 
     
 }

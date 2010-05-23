@@ -179,8 +179,8 @@ namespace ValidatorSDK
         {
             ObjectBinder binder= CreateObjectBinder(data);
             ValidationRequest request = new ValidationRequest(binder);
-            ValidationResult result = new ValidationResult();
-            data.flow.Validate(request, result);
+            FlowErrorTrace errorTrace = data.flow.Validate(request);
+            ValidationResult result = new ValidationResult(errorTrace);
             return result;
         }
     }
