@@ -7,8 +7,8 @@
       <StringData>New String Data</StringData>
       <IntData>0</IntData>
       <FloatData>0.1</FloatData>
-      <ObjectDataComboSelected>3</ObjectDataComboSelected>
-      <ObjectDataStringData>270,310</ObjectDataStringData>
+      <ObjectDataComboSelected>2</ObjectDataComboSelected>
+      <ObjectDataStringData>270,311</ObjectDataStringData>
     </PropRowData>
     <PropRowData>
       <Key>PAPER_SIZE_A4</Key>
@@ -16,7 +16,7 @@
       <StringData>New String Data</StringData>
       <IntData>0</IntData>
       <FloatData>0.1</FloatData>
-      <ObjectDataComboSelected>3</ObjectDataComboSelected>
+      <ObjectDataComboSelected>2</ObjectDataComboSelected>
       <ObjectDataStringData>270,310</ObjectDataStringData>
     </PropRowData>
   </PropRowsData>

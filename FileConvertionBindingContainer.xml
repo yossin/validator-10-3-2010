@@ -3,19 +3,19 @@
   <referenceBindingContainer>
     <referenceBinding>
       <Key>Paper</Key>
-      <Value>Paper</Value>
+      <Value />
     </referenceBinding>
     <referenceBinding>
       <Key>size of paper</Key>
-      <Value>Attribute Name</Value>
+      <Value>size</Value>
     </referenceBinding>
     <referenceBinding>
       <Key>paper size width</Key>
-      <Value>x</Value>
+      <Value>size.x</Value>
     </referenceBinding>
     <referenceBinding>
       <Key>paper size height</Key>
-      <Value>y</Value>
+      <Value>size.y</Value>
     </referenceBinding>
   </referenceBindingContainer>
   <contextBindingContainer>
