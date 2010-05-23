@@ -59,16 +59,16 @@ namespace Mock1Test
             //definitionKey, string runtimeKey
             Dictionary<string, string> contextBinding = new Dictionary<string, string>();
 
-            contextBinding["person1".ToLower()] = "Person1";
-            contextBinding["person2".ToLower()] = "Person2";
-            contextBinding["person3".ToLower()] = "Person3";
+            contextBinding["person1"] = "Person1";
+            contextBinding["person2"] = "Person2";
+            contextBinding["person3"] = "Person3";
 
 
             //referenceKey, string propertyChain
             Dictionary<string, string> referenceBinding = new Dictionary<string, string>();
-            referenceBinding["Person's Name".ToLower()] = "Name";
-            referenceBinding["Person's Age".ToLower()] = "Age";
-            referenceBinding["Person".ToLower()] = "";
+            referenceBinding["Person's Name"] = "Name";
+            referenceBinding["Person's Age"] = "Age";
+            referenceBinding["Person"] = "";
 
             BindingContainer container = new BindingContainer(contextBinding, referenceBinding);
             return container;
