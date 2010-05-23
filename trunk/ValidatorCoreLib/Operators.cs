@@ -46,7 +46,7 @@ namespace ValidatorCoreLib
     {     
         protected override bool OperatorEvaluation(IComparable obj1, IComparable obj2)
         {
-            return obj1.Equals(obj2);
+            return obj1.CompareTo(obj2)==0;
         }
     }
 

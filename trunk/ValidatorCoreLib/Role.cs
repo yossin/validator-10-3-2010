@@ -21,11 +21,16 @@ namespace ValidatorCoreLib
         public string RuleName { get; set; }
 
         public PropertySelection Property { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute]
         public IComparable ComparedObject { get; set; }
 
         [System.Xml.Serialization.XmlIgnoreAttribute]
         public IOperator Operator { get; set; }
 
+        // Used only for xml Serialization
+        public int ComparedObjectType { get; set; }
+        public string ComparedObjectStringData { get; set; }
+        public PropertySelection ComparedObjectPropertySelectionData { get; set; }
         public string OperatorName { get; set; }
 
      //   public int id { get; set; }
@@ -35,8 +40,7 @@ namespace ValidatorCoreLib
 
         // Used only for xml Serialization
         public ValidationRule() 
-        {
-            this.Operator = OperatorHelper.GetOperator(this.OperatorName);
+        {           
         }
 
         public ValidationRule(string RuleName, PropertySelection selection, IComparable comparedObject, IOperator op, bool AutoResolve, string ResolveStringForUI)
@@ -45,8 +49,15 @@ namespace ValidatorCoreLib
             this.Operator = op;
             this.OperatorName = op.GetType().ToString();
             this.Property = selection;
-            this.ComparedObject = comparedObject;
             validationResolve = new ValidationResolve(AutoResolve, ResolveStringForUI);
+
+            this.ComparedObject = comparedObject;
+            ComparedObjectStringData = @"_";
+            ComparedObjectPropertySelectionData = new PropertySelection(@"_",@"_");
+            if (comparedObject is System.Int32) { ComparedObjectType = 0; ComparedObjectStringData = comparedObject.ToString(); }
+            else if (comparedObject is System.String) { ComparedObjectType = 1; ComparedObjectStringData = comparedObject.ToString(); }
+            else if (comparedObject is System.Single) { ComparedObjectType = 2; ComparedObjectStringData = comparedObject.ToString(); }
+            else if (comparedObject is PropertySelection) { ComparedObjectType = 3; ComparedObjectPropertySelectionData = (PropertySelection)comparedObject; }
         }
 
         public ErrorValidationEvent Validate(ValidationRequest request, FlowErrorTrace parent)
@@ -62,8 +73,7 @@ namespace ValidatorCoreLib
             {
                 return new UnableToBindEvent(parent, e, this, Property, 1);
             }
-
-            
+                        
             if (ComparedObject.GetType().Equals(typeof(PropertySelection)))
             {
                 // bind 2nd object
@@ -105,6 +115,18 @@ namespace ValidatorCoreLib
             catch (Exception e)
             {
                 return (new RuleRuntimeErrorEvent(parent, e, this, comparableToCheck, comparableComaredObject));
+            }
+        }
+        public void resetSerializationObbjects()
+        {
+            this.Operator = OperatorHelper.GetOperator(this.OperatorName);
+
+            switch (ComparedObjectType)
+            {
+                case 0: ComparedObject = Int32.Parse(ComparedObjectStringData); break;
+                case 1: ComparedObject = ComparedObjectStringData; break;
+                case 2: ComparedObject = Single.Parse(ComparedObjectStringData); break;
+                case 3: ComparedObject = ComparedObjectPropertySelectionData; break;
             }
         }
 

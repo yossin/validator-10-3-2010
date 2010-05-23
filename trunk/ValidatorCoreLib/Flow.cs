@@ -75,6 +75,14 @@ namespace ValidatorCoreLib
         {
             return this.Name;
         }
+
+        public void resetSerializationObbjects()
+        {
+            foreach (ValidationFlow flow in flows)
+                flow.resetSerializationObbjects();
+            foreach (ValidationRule rule in rules)
+                rule.resetSerializationObbjects();
+        }
     }
     
 }
