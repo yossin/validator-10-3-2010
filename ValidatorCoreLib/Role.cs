@@ -49,7 +49,7 @@ namespace ValidatorCoreLib
             validationResolve = new ValidationResolve(AutoResolve, ResolveStringForUI);
         }
 
-        public ErrorValidationEvent Validate(ValidationRequest request)
+        public ErrorValidationEvent Validate(ValidationRequest request, FlowErrorTrace parent)
         {
             ObjectBinder binder = request.Binder;
             // todo: check IComparable casting is possible
@@ -60,7 +60,7 @@ namespace ValidatorCoreLib
                 comparableToCheck = binder.Bind(Property);
             }catch (Exception e)
             {
-                return new UnableToBindEvent(e, this, Property, 1);
+                return new UnableToBindEvent(parent, e, this, Property, 1);
             }
 
             
@@ -74,7 +74,7 @@ namespace ValidatorCoreLib
                 }
                 catch (Exception e)
                 {
-                    return new UnableToBindEvent(e, this, selected, 2);
+                    return new UnableToBindEvent(parent, e, this, selected, 2);
                 }
             }
             else
@@ -86,7 +86,7 @@ namespace ValidatorCoreLib
                 }
                 catch (Exception e)
                 {
-                    return new RuleRuntimeErrorEvent(e, this, comparableToCheck, comparableComaredObject);
+                    return new RuleRuntimeErrorEvent(parent, e, this, comparableToCheck, comparableComaredObject);
                 }
             }
 
@@ -95,7 +95,7 @@ namespace ValidatorCoreLib
             {
                 if (Operator.Evaluate(comparableToCheck, comparableComaredObject) == false)
                 {
-                    return new UnsuccessfulRuleCompletionEvent(this, comparableToCheck, comparableComaredObject);
+                    return new UnsuccessfulRuleCompletionEvent(parent, this, comparableToCheck, comparableComaredObject);
                 }
                 else
                 {
@@ -104,7 +104,7 @@ namespace ValidatorCoreLib
             }
             catch (Exception e)
             {
-                return (new RuleRuntimeErrorEvent(e, this, comparableToCheck, comparableComaredObject));
+                return (new RuleRuntimeErrorEvent(parent, e, this, comparableToCheck, comparableComaredObject));
             }
         }
 

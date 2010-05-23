@@ -13,6 +13,8 @@ namespace ValidatorCoreLib
         {
             this.flow = flow;
         }
+        public FlowErrorTrace Parent { get; private set; }
+         
 
         List<ErrorValidationEvent> errorEvents = new List<ErrorValidationEvent>();
         List<FlowErrorTrace> flowErrors = new List<FlowErrorTrace>();
@@ -36,6 +38,7 @@ namespace ValidatorCoreLib
             }
             else
             {
+                flowError.Parent = this;
                 flowErrors.Add(flowError);
             }
         }
