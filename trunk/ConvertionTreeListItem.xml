@@ -17,11 +17,11 @@
             </ConvertionTree>
           </convertionItems>
           <convertionPath>size of paper</convertionPath>
-          <convertionAttribute>Attribute Name</convertionAttribute>
+          <convertionAttribute>size</convertionAttribute>
         </ConvertionTree>
       </convertionItems>
       <convertionPath>Paper</convertionPath>
-      <convertionAttribute>Paper</convertionAttribute>
+      <convertionAttribute />
     </ConvertionTree>
   </convertionTreeListItem>
 </ConvertionTreeListItem>
