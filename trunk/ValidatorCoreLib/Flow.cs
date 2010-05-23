@@ -13,7 +13,7 @@ namespace ValidatorCoreLib
     // flow is a recursive structure that holds rules and know how to do a recursive validation.
     // a flow has a two operator options - and/or to determain the action validation check inside the current recursive check
     [Serializable(), XmlRoot("ValidationFlow", Namespace = "ValidatorCoreLib",IsNullable = false)]
-    public class ValidationFlow : ValidationProcess
+    public class ValidationFlow
     {
         public List<ValidationFlow> flows = new List<ValidationFlow>();
         public List<ValidationRule> rules = new List<ValidationRule>();
@@ -30,32 +30,29 @@ namespace ValidatorCoreLib
             this.UseAndOperator = useAndOperator;
         }
 
-        public bool Validate(ValidationRequest request, ValidationResult result)
+        public FlowErrorTrace Validate(ValidationRequest request)
         {
-            bool success = UseAndOperator ? true : false;
+            FlowErrorTrace flowErrorTrace = new FlowErrorTrace(this);
 
             foreach (ValidationFlow flow in flows)
             {
-                bool lastValidation = flow.Validate(request, result);
-                if (UseAndOperator)
-                    success &= lastValidation;
-                else
-                    success |= lastValidation;
-                if (lastValidation == false)
-                {
-                    result.AddErrorEvent(new UnsuccessfulFlowCompletionEvent(this));
-                }
+                FlowErrorTrace lastFlowTrace = flow.Validate(request);
+                flowErrorTrace.AddFlowErrorTrace(lastFlowTrace);
             }
             foreach (ValidationRule rule in rules)
             {
-                if (UseAndOperator)
-                    success &= rule.Validate(request, result);
-                else
-                    success |= rule.Validate(request, result);
+                ErrorValidationEvent validationEvent = rule.Validate(request);
+                flowErrorTrace.AddErrorValidationEvent(validationEvent);
             }
-            
-            result.NotifiyFlowValidationEndIteration();
-            return success;
+
+            if (flowErrorTrace.containsMajorValidationErrors())
+            {
+                return flowErrorTrace;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void Add(ValidationRule rule)

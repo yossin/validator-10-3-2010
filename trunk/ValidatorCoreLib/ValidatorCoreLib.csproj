@@ -80,8 +80,8 @@
     <Compile Include="Operators.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationErrorTrace.cs" />
     <Compile Include="ValidationEvents.cs" />
-    <Compile Include="ValidationProcess.cs" />
     <Compile Include="ValidationRequest.cs" />
     <Compile Include="ValidationResult.cs" />
   </ItemGroup>

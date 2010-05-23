@@ -16,12 +16,12 @@ namespace ValidatorCoreLib
     //
     // the rule is a set of definitions to check object data
     [Serializable(), XmlRoot("ValidationRule", Namespace = "ValidatorCoreLib", IsNullable = false)]
-    public class ValidationRule : ValidationProcess
+    public class ValidationRule
     {
         public string RuleName { get; set; }
 
         public PropertySelection Property { get; set; }
-        public PropertySelection ComparedObject { get; set; }
+        public IComparable ComparedObject { get; set; }
 
         [System.Xml.Serialization.XmlIgnoreAttribute]
         public IOperator Operator { get; set; }
@@ -39,17 +39,17 @@ namespace ValidatorCoreLib
             this.Operator = OperatorHelper.GetOperator(this.OperatorName);
         }
 
-        public ValidationRule(string RuleName, PropertySelection property, PropertySelection comparedObject, IOperator op, bool AutoResolve, string ResolveStringForUI)
+        public ValidationRule(string RuleName, PropertySelection selection, IComparable comparedObject, IOperator op, bool AutoResolve, string ResolveStringForUI)
         {
             this.RuleName = RuleName;
             this.Operator = op;
             this.OperatorName = op.GetType().ToString();
-            this.Property = property;
+            this.Property = selection;
             this.ComparedObject = comparedObject;
             validationResolve = new ValidationResolve(AutoResolve, ResolveStringForUI);
         }
 
-        public bool Validate(ValidationRequest request, ValidationResult result)
+        public ErrorValidationEvent Validate(ValidationRequest request)
         {
             ObjectBinder binder = request.Binder;
             // todo: check IComparable casting is possible
@@ -60,8 +60,7 @@ namespace ValidatorCoreLib
                 comparableToCheck = binder.Bind(Property);
             }catch (Exception e)
             {
-                result.AddErrorEvent(new UnableToBindEvent(e, this, Property, 1));
-                return false;
+                return new UnableToBindEvent(e, this, Property, 1);
             }
 
             
@@ -75,8 +74,7 @@ namespace ValidatorCoreLib
                 }
                 catch (Exception e)
                 {
-                    result.AddErrorEvent(new UnableToBindEvent(e, this, selected, 2));
-                    return false;
+                    return new UnableToBindEvent(e, this, selected, 2);
                 }
             }
             else
@@ -88,8 +86,7 @@ namespace ValidatorCoreLib
                 }
                 catch (Exception e)
                 {
-                    result.AddErrorEvent(new RuleRuntimeErrorEvent(e, this, comparableToCheck, comparableComaredObject));
-                    return false;
+                    return new RuleRuntimeErrorEvent(e, this, comparableToCheck, comparableComaredObject);
                 }
             }
 
@@ -98,18 +95,16 @@ namespace ValidatorCoreLib
             {
                 if (Operator.Evaluate(comparableToCheck, comparableComaredObject) == false)
                 {
-                    result.AddErrorEvent(new UnsuccessfulRuleCompletionEvent(this, comparableToCheck, comparableComaredObject));
-                    return false;
+                    return new UnsuccessfulRuleCompletionEvent(this, comparableToCheck, comparableComaredObject);
                 }
                 else
                 {
-                    return true;
+                    return null;
                 }
             }
             catch (Exception e)
             {
-                result.AddErrorEvent(new RuleRuntimeErrorEvent(e, this, comparableToCheck, comparableComaredObject));
-                return false;
+                return (new RuleRuntimeErrorEvent(e, this, comparableToCheck, comparableComaredObject));
             }
         }
 
