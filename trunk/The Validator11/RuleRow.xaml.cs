@@ -33,7 +33,7 @@ namespace The_Validator11
             ProperyPath.Text = rule.Property.ReferenceMeaning;
             
             setOperatorComboValue(rule.Operator);
- 
+
             setTypeComboValue(rule.ComparedObject);
 
             ResolveCheck.IsChecked = rule.validationResolve.AutoResolve;
@@ -126,20 +126,26 @@ namespace The_Validator11
             return new EqualOperator();
         }
 
-        private void setTypeComboValue(PropertySelection comparedObject)
+        private void setTypeComboValue(IComparable comparedObject_)
         {
-            if (comparedObject.ReferenceMeaning.ToLower().Contains("system.int32"))ObjectType.SelectedIndex = 0;
-            else if (comparedObject.ReferenceMeaning.ToLower().Contains("system.string"))ObjectType.SelectedIndex = 1;
-            else if (comparedObject.ReferenceMeaning.ToLower().Contains("system.single"))ObjectType.SelectedIndex = 2;
-            else // object
+            if (comparedObject_ == null) return;    // shouldn't be!!
+
+            if (comparedObject_ is PropertySelection)
             {
+                PropertySelection comparedObject = (PropertySelection)comparedObject_;
                 ObjectType.SelectedIndex = 3;
                 setObjectGUI(true);
 
                 CompareToPath.Text = comparedObject.ReferenceMeaning;
+                CompareTo.Text = comparedObject.ContextKey;
+                return;
             }
+            
+            if (comparedObject_ is System.Int32) ObjectType.SelectedIndex = 0;
+            else if (comparedObject_ is System.String)ObjectType.SelectedIndex = 1;
+            else if (comparedObject_ is System.Single)ObjectType.SelectedIndex = 2;
 
-            CompareTo.Text = comparedObject.ContextKey;
+            CompareTo.Text = comparedObject_.ToString();
         }
 
         private void setObjectGUI(bool bObject)
@@ -149,15 +155,15 @@ namespace The_Validator11
             label_key_.Text = bObject ? @"Name:" : @"Value:";
         }
 
-        private PropertySelection getTypeFromCombo()
+        private IComparable getTypeFromCombo()
         {
             if ( ObjectType.SelectedIndex < 3 )
-            {
+            {               
                 switch (ObjectType.SelectedIndex)
                 {
-                    case 0: return new PropertySelection(CompareTo.Text, @"System.Int32");
-                    case 1: return new PropertySelection(CompareTo.Text, @"System.String");
-                    case 2: return new PropertySelection(CompareTo.Text, @"System.Single");     // Float
+                    case 0: return Int32.Parse(CompareTo.Text);
+                    case 1: return CompareTo.Text;
+                    case 2: return Single.Parse(CompareTo.Text);     // Float
                 }
             }
             return new PropertySelection(CompareTo.Text, CompareToPath.Text);     // object
