@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HostSysSim
 {
-    class Point
+    class Point :IComparable,IComparable<Point>
     {
         public int x{ get; set; }
         public int y{ get; set; }
@@ -26,5 +26,18 @@ namespace HostSysSim
             this.x = x;
             this.y = y;
         }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo((Point)obj);
+        }
+
+        public int CompareTo(Point other)
+        {
+            int xDif = x - other.x;
+            int yDif = (y - other.y)*1000;
+            return (xDif + yDif);
+        }
+
     }
 }

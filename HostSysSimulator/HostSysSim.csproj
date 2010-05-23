@@ -8,8 +8,8 @@
     <ProjectGuid>{E3FE3977-3121-4974-9EE8-61697D1BD45B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>The_Validator11</RootNamespace>
-    <AssemblyName>The Validator11</AssemblyName>
+    <RootNamespace>HostSysSim</RootNamespace>
+    <AssemblyName>HostSysSim</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

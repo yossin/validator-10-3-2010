@@ -140,8 +140,44 @@ namespace HostSysSim
             {
                 ValidatorCoreLib.ValidationResult result = Validator.Validate(validationData);
                 // todo: proceed later
-                MessageBox.Show(result.ToString(), "File load error", MessageBoxButton.OK);
-                //MessageBox.Show(result.Message, "File load error", MessageBoxButton.OK);
+                if (!result.ContainsError)   
+                    MessageBox.Show(@"There are no errors", "no conflicts", MessageBoxButton.OK);
+                else
+                {
+                    foreach (ValidatorCoreLib.ValidationErrorEvents.ErrorValidationEvent eve in result.ErrorValidationEvents)
+                    {
+                        if (eve is ValidatorCoreLib.ValidationErrorEvents.RuleValidationEvent)
+                        {
+                            ValidatorCoreLib.ValidationErrorEvents.RuleValidationEvent eve_ = (ValidatorCoreLib.ValidationErrorEvents.RuleValidationEvent)eve;
+                            if (eve_.Rule.validationResolve.AutoResolve)
+                            {
+                                StringBuilder sRes = new StringBuilder(@"There is a conflict in rule name=");
+                                sRes.Append(eve_.Rule.RuleName);
+                                sRes.Append(", \nThis is an auto resolver");
+                                sRes.Append(", \n\tResolve=");
+                                sRes.Append(eve_.Rule.validationResolve.ResolveObjects[eve_.Rule.validationResolve.ResolveObjectSelected]);
+                                MessageBox.Show(sRes.ToString(), "conflict", MessageBoxButton.OK);
+                            }
+                            else
+                            {
+                                StringBuilder sRes = new StringBuilder(@"There is a conflict in rule name=");
+                                sRes.Append(eve_.Rule.RuleName);
+                                sRes.Append(", \nResolve message=");
+                                sRes.Append(eve_.Rule.validationResolve.ResolveStringForUI);
+                                sRes.Append(", \nResolves are: \n\t");
+                                foreach (object obj in eve_.Rule.validationResolve.ResolveObjects)
+                                {
+                                    sRes.Append(obj);
+                                    sRes.Append(",\n\t");
+                                }
+                                MessageBox.Show(sRes.ToString(), "conflict", MessageBoxButton.OK);
+                            }
+                        }
+                        else
+                            MessageBox.Show(result.ToString(), "conflict", MessageBoxButton.OK);
+                        
+                    }
+                }
             }
         }
 
