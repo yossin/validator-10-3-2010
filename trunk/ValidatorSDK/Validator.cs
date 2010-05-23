@@ -109,7 +109,7 @@ namespace ValidatorSDK
 
                 try
                 {
-                    runtimeBinding = data.bindingContainer.ContextBinding[selection.ContextKey.ToLower()];
+                    runtimeBinding = data.bindingContainer.ContextBinding[selection.ContextKey];
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -118,7 +118,7 @@ namespace ValidatorSDK
 
                 try
                 {
-                    propertyChain = data.bindingContainer.ReferenceBinding[selection.ReferenceMeaning.ToLower()];
+                    propertyChain = data.bindingContainer.ReferenceBinding[selection.ReferenceMeaning];
                 }
                 catch (KeyNotFoundException e)
                 {
