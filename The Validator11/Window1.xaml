@@ -28,15 +28,6 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Path Convertion" Name="ConvertionTableTab" Background="LightGray">
-                <DockPanel>
-                    <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
-                        <TreeViewItem Header="" Name="Convertion_TreeViewItem">
-                        </TreeViewItem>
-                    </ScrollViewer>
-
-                </DockPanel>
-            </TabItem>
 
             <TabItem Header="Naming Convertion" Background="LightGray">
                 <DockPanel>
@@ -83,20 +74,16 @@
 
                 </DockPanel>
             </TabItem>
-            <!--
+            <TabItem Header="Type Convertion" Name="ConvertionTableTab" Background="LightGray">
+                <DockPanel>
+                    <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                        <TreeViewItem Header="" Name="Convertion_TreeViewItem">
+                        </TreeViewItem>
+                    </ScrollViewer>
 
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
-                    <WrapPanel >
-                        <Grid ShowGridLines="True" Background="LightBlue" Name="ConvertionGrid" Width="Auto" Height="Auto">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                            </Grid.RowDefinitions>
-                    </Grid>
-                    </WrapPanel>
-                </ScrollViewer>
-                    -->
+                </DockPanel>
+            </TabItem>
+            
         </TabControl>
 
     </DockPanel>
