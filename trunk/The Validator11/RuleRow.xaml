@@ -7,7 +7,7 @@
             <Grid>
                 <Rectangle Margin="-6" StrokeThickness="1.25" Stroke="Black">
                 </Rectangle>
-                <GroupBox Height="147">
+                <GroupBox Height="152">
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <Button Name="DeleteRule"       Margin="-2,2" Padding="-1,-5" Width="13" Height="14" Click="OnX_Click">X</Button>
@@ -17,7 +17,7 @@
 
                     <Grid Height="Auto" Width="399" Grid.Row="0" Grid.Column="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="39" />
+                            <RowDefinition Height="44" />
                             <RowDefinition Height="44" />
                             <RowDefinition Height="44" />
                         </Grid.RowDefinitions>
@@ -29,7 +29,7 @@
                                 <TextBox Name="ProperyName"      Margin="0,4,0,0" Padding="0,-2" Width="90" Height="21" >0</TextBox>
 
                                 <Label Name="label_Path"        Padding="8,4,0,0" Height="23" Width="38">Type:</Label>
-                                <TextBox Name="ProperyPath"     Margin="1,4,0,0" Padding="0,-2" Text="Rule Name" Width="90" Height="21"></TextBox>
+                                <TextBox Name="ProperyPath"     Margin="1,4,0,0" Padding="0,-2" Text="" Width="90" Height="21"></TextBox>
                             </StackPanel>
                         </GroupBox>
 
@@ -44,7 +44,7 @@
                                 <TextBox Name="CompareTo"       Margin="0,4,0,0" Padding="0,-2" Width="90" Height="21" >0</TextBox>
 
                                 <Label Name="label_Path_"        Padding="8,4,0,0" Height="23" Width="38">Type:</Label>
-                                <TextBox Name="CompareToPath"     Margin="1,4,0,0" Padding="0,-2" Text="Rule Name" Width="90" Height="21"></TextBox>
+                                <TextBox Name="CompareToPath"     Margin="1,4,0,0" Padding="0,-2" Text="" Width="90" Height="21"></TextBox>
                             </StackPanel>
                         </GroupBox>
 

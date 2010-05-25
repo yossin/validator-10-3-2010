@@ -5,7 +5,7 @@
     <Grid Height="Auto">
         <WrapPanel Margin="0,4">
             <Button Name="RemoveConvertionClassItem" Click="RemoveConvertionClassItem_Click" Content="X" Height="19" Width="19" Padding="-1" Margin="8,2">            </Button>
-            <TextBlock Text="Path:" Width="27" Padding="0,5" Margin="3,0"></TextBlock>
+            <TextBlock Text="Type:" Width="27" Padding="0,5" Margin="3,0"></TextBlock>
             <TextBox Name="convertionPath" Text="Path" Width="150" Padding="1,4" Margin="3,0"></TextBox>
             <TextBlock Name="convertionAttributeTB" Text="Attribute:" Width="52" Padding="0,5" Margin="3,0"></TextBlock>
             <TextBox Name="convertionAttribute" Width="150" Text="Class Item Name" Padding="1,4" Margin="3,0">   </TextBox>
