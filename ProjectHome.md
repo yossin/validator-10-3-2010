@@ -1,0 +1,1 @@
+This project is created to learn and test the usage of google code, but this project can be in use for developing the Validator's project.
